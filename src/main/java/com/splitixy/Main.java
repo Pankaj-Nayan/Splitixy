@@ -59,7 +59,6 @@ public class Main {
                     } else {
                         System.out.println("❌ Invalid Email or Password!");
                     }
-
                     break;
 
                 case 3:
