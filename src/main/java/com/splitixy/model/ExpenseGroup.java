@@ -1,3 +1,4 @@
+
 package com.splitixy.model;
 
 public class ExpenseGroup {

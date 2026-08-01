@@ -1,6 +1,6 @@
 
 package com.splitixy;
-
+import com.splitixy.util.Menu;
 import com.splitixy.model.User;
 import com.splitixy.service.UserService;
 
@@ -46,20 +46,26 @@ public class Main {
 
                     break;
 
-                case 2:
+
+                case 2: {
 
                     System.out.print("Enter Email : ");
-                    String login_email = scanner.nextLine();
+                    String loginEmail = scanner.nextLine();
 
                     System.out.print("Enter Password : ");
-                    String login_password = scanner.nextLine();
+                    String loginPassword = scanner.nextLine();
 
-                    if (userService.loginUser(login_email, login_password)) {
+                    User loggedInUser = userService.loginUser(loginEmail, loginPassword);
+
+                    if (loggedInUser != null) {
                         System.out.println("✅ Login Successful!");
+                        Menu.dashboard(loggedInUser);
                     } else {
                         System.out.println("❌ Invalid Email or Password!");
                     }
+
                     break;
+                }
 
                 case 3:
 

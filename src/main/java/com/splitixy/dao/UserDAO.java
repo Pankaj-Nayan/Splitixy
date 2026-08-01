@@ -30,7 +30,7 @@ public class UserDAO {
             return false;
         }
     }
-    public boolean loginUser(String email, String password) {
+    public User loginUser(String email, String password) {
 
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
 
@@ -42,11 +42,22 @@ public class UserDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            return resultSet.next();
+            if (resultSet.next()) {
+
+                User user = new User();
+
+                user.setUserId(resultSet.getInt("user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+
+                return user;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+
+        return null;
     }
 }
