@@ -5,9 +5,19 @@ import com.splitixy.model.ExpenseGroup;
 import com.splitixy.service.GroupService;
 import java.util.Scanner;
 import com.splitixy.model.ExpenseGroup;
+import com.splitixy.model.ExpenseSplit;
+import com.splitixy.service.ExpenseSplitService;
+
+import com.splitixy.split.SplitStrategy;
+import com.splitixy.split.EqualSplitStrategy;
+import com.splitixy.model.Balance;
+import com.splitixy.service.BalanceService;
+import java.util.Map;
 import java.util.List;
 import com.splitixy.service.UserService;
 import com.splitixy.model.User;
+import com.splitixy.model.Expense;
+import com.splitixy.service.ExpenseService;
 
 public class Menu {
 
@@ -161,14 +171,122 @@ public class Menu {
 
                     break;
                 }
-                case 3:
-                    System.out.println("Add Expense Coming Soon...");
-                    break;
+                case 3: {
 
-                case 4:
-                    System.out.println("View Balances Coming Soon...");
-                    break;
+                    System.out.print("Enter Description : ");
+                    String description = scanner.nextLine();
 
+                    System.out.print("Enter Amount : ");
+                    double amount = scanner.nextDouble();
+                    scanner.nextLine();
+
+                    GroupService groupService = new GroupService();
+
+                    List<User> members = groupService.getGroupMembers(group.getGroupId());
+
+                    System.out.println("\nWho Paid?");
+
+                    int index = 1;
+
+                    for (User member : members) {
+                        System.out.println(index + ". " + member.getName());
+                        index++;
+                    }
+
+                    System.out.print("Choose : ");
+                    int payerChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (payerChoice < 1 || payerChoice > members.size()) {
+                        System.out.println("❌ Invalid Choice!");
+                        break;
+                    }
+
+                    User payer = members.get(payerChoice - 1);
+
+                    Expense expense = new Expense(
+                            group.getGroupId(),
+                            payer.getUserId(),
+                            amount,
+                            description
+                    );
+
+                    ExpenseService expenseService = new ExpenseService();
+
+                    int expenseId = expenseService.addExpense(expense);
+
+                    if (expenseId == -1) {
+                        System.out.println("❌ Failed to Add Expense!");
+                        break;
+                    }
+
+                    System.out.println("\nChoose Split Type");
+                    System.out.println("1. Equal Split");
+                    System.out.println("2. Custom Split");
+
+                    int splitChoice = scanner.nextInt();
+                    scanner.nextLine();
+
+                    SplitStrategy strategy;
+
+                    if (splitChoice == 1) {
+                        strategy = new EqualSplitStrategy();
+                    } else {
+                        System.out.println("Custom Split Coming Soon...");
+                        break;
+                    }
+
+                    Map<Integer, Double> splitMap =
+                            strategy.splitExpense(amount, members);
+
+                    ExpenseSplitService splitService =
+                            new ExpenseSplitService();
+
+                    for (Map.Entry<Integer, Double> entry : splitMap.entrySet()) {
+
+                        ExpenseSplit split = new ExpenseSplit(
+                                expenseId,
+                                entry.getKey(),
+                                entry.getValue()
+                        );
+
+                        splitService.addSplit(split);
+                    }
+
+                    System.out.println("✅ Expense Added & Split Successfully!");
+
+                    break;
+                }
+
+                case 4: {
+
+                    BalanceService balanceService = new BalanceService();
+
+                    List<Balance> balances =
+                            balanceService.getBalances(group.getGroupId());
+
+                    System.out.println("\n========== Balances ==========");
+
+                    for (Balance balance : balances) {
+
+                        if (balance.getBalance() > 0) {
+                            System.out.println(balance.getUserName()
+                                    + " should receive ₹"
+                                    + balance.getBalance());
+                        }
+                        else if (balance.getBalance() < 0) {
+                            System.out.println(balance.getUserName()
+                                    + " owes ₹"
+                                    + Math.abs(balance.getBalance()));
+                        }
+                        else {
+                            System.out.println(balance.getUserName()
+                                    + " is settled.");
+                        }
+                    }
+
+                    break;
+                }
                 case 5:
                     return;
 
