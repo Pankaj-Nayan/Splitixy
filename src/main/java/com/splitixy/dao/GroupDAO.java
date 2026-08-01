@@ -2,7 +2,8 @@ package com.splitixy.dao;
 
 import com.splitixy.db.DBconnection;
 import com.splitixy.model.ExpenseGroup;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.sql.*;
 
 public class GroupDAO {
@@ -52,6 +53,60 @@ public class GroupDAO {
             }
 
             connection.rollback();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+    public List<ExpenseGroup> getGroupsByUser(int userId) {
+
+        List<ExpenseGroup> groups = new ArrayList<>();
+
+        String query = """
+            SELECT eg.group_id, eg.group_name, eg.created_by
+            FROM expense_groups eg
+            INNER JOIN group_members gm
+            ON eg.group_id = gm.group_id
+            WHERE gm.user_id = ?
+            """;
+
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                ExpenseGroup group = new ExpenseGroup();
+
+                group.setGroupId(resultSet.getInt("group_id"));
+                group.setGroupName(resultSet.getString("group_name"));
+                group.setCreatedBy(resultSet.getInt("created_by"));
+
+                groups.add(group);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return groups;
+    }
+    public boolean addMember(int groupId, int userId) {
+
+        String query = "INSERT INTO group_members(group_id, user_id) VALUES(?, ?)";
+
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, groupId);
+            preparedStatement.setInt(2, userId);
+
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();

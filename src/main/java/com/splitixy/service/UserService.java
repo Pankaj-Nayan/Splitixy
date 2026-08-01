@@ -15,4 +15,8 @@ public class UserService {
     public User loginUser(String email, String password) {
         return userDAO.loginUser(email, password);
     }
+    public User getUserByEmail(String email) {
+        return userDAO.getUserByEmail(email);
+    }
+
 }
