@@ -5,6 +5,9 @@ import com.splitixy.model.ExpenseGroup;
 import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
+import com.splitixy.model.User;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GroupDAO {
 
@@ -113,5 +116,41 @@ public class GroupDAO {
         }
 
         return false;
+    }
+    public List<User> getGroupMembers(int groupId) {
+
+        List<User> members = new ArrayList<>();
+
+        String query = """
+            SELECT u.user_id, u.name, u.email
+            FROM users u
+            INNER JOIN group_members gm
+            ON u.user_id = gm.user_id
+            WHERE gm.group_id = ?
+            """;
+
+        try (Connection connection = DBconnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, groupId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                User user = new User();
+
+                user.setUserId(resultSet.getInt("user_id"));
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+
+                members.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return members;
     }
 }

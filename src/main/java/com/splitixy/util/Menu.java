@@ -138,10 +138,29 @@ public class Menu {
                     break;
                 }
 
-                case 2:
-                    System.out.println("View Members Coming Soon...");
-                    break;
+                case 2: {
 
+                    GroupService groupService = new GroupService();
+
+                    List<User> members = groupService.getGroupMembers(group.getGroupId());
+
+                    if (members.isEmpty()) {
+                        System.out.println("No members found.");
+                        break;
+                    }
+
+                    System.out.println("\n========== Members ==========");
+
+                    int index = 1;
+
+                    for (User member : members) {
+                        System.out.println(index + ". " + member.getName() +
+                                " (" + member.getEmail() + ")");
+                        index++;
+                    }
+
+                    break;
+                }
                 case 3:
                     System.out.println("Add Expense Coming Soon...");
                     break;
