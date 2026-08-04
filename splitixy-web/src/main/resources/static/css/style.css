@@ -1,0 +1,86 @@
+*{margin:0;padding:0;box-sizing:border-box}body{min-height:100vh;display:flex;justify-content:center;align-items:center;overflow:hidden;font-family:'Segoe UI',sans-serif;background:radial-gradient(circle at top,#45206d 0%,#171227 45%,#09050f 100%)}.stars{position:fixed;inset:0;background-image:radial-gradient(white 1px,transparent 1px),radial-gradient(#b784ff 1px,transparent 1px);background-size:110px 110px,170px 170px;opacity:.55;animation:moveStars 90s linear infinite}@keyframes moveStars{to{transform:translateY(-250px)}}.fog{position:fixed;left:0;bottom:-120px;width:100%;height:320px;background:radial-gradient(circle,#7b2cff55,transparent 70%);filter:blur(70px)}
+.darkrai{position:fixed;right:-60px;bottom:50;width:320px;opacity:.65;pointer-events:none;
+
+
+animation:darkraiFloat 6s ease-in-out infinite}
+@keyframes darkraiFloat{
+
+
+    0%{
+
+        transform:translateX(-50%) translateY(0);
+    }
+
+    50%{
+
+        transform:translateX(-50%) translateY(12px);
+    }
+
+    100%{
+
+        transform:translateX(-50%) translateY(0);
+    }
+
+                                          }}.login-card{position:relative;z-index:5;width:800px;padding:50px;border-radius:28px;background:rgba(18,18,32,.72);backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.12);box-shadow:0 0 45px rgba(123,44,255,.35),0 18px 60px rgba(0,0,0,.55);transform: translateY(-20px);}
+                                          .title{
+                                          text-align:center;
+                                              font-family: 'Orbitron', sans-serif;
+                                              color: #808080;
+                                              letter-spacing: 2px;
+                                              font-weight:800;
+                                          }
+                                          .subtitle{text-align:center;
+                                          font-family:'Audiowide', sans-serif;
+
+                                              font-size:22px;
+
+                                              font-weight:600;
+                                          color:#808080;margin:10px 0 30px}
+                                          .form-control{height:56px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#fff}.form-control::placeholder{color:#d6d6d6}
+.btn-login{width:100%;height:66px;border:none;border-radius:16px;font-weight:800;color:#fff;background:linear-gradient(90deg,#6d28d9,#9333ea)}
+.btn-login:hover{
+
+    transform:translateY(-3px);
+
+}
+.register-text{text-align:center;color:#fff;margin-top:20px}
+.register-text a{color:#b784ff;text-decoration:none}
+.yveltal{
+
+    position:fixed;
+
+    top:50px;
+
+    left:15%;
+
+    transform:translateX(-50%);
+
+    width:470px;
+
+    opacity:.58;
+
+    pointer-events:none;
+
+    z-index:0;
+
+    animation:yveltalFly 10s ease-in-out infinite;
+}
+
+@keyframes yveltalFly{
+
+    0%{
+
+        transform:translateX(-50%) translateY(0);
+    }
+
+    50%{
+
+        transform:translateX(-50%) translateY(12px);
+    }
+
+    100%{
+
+        transform:translateX(-50%) translateY(0);
+    }
+
+}

@@ -1,0 +1,7 @@
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:Poppins,sans-serif;min-height:100vh;background:linear-gradient(180deg,#031320,#06243d,#03111c);color:#fff;overflow:hidden}nav{display:flex;justify-content:space-between;align-items:center;padding:25px 60px}.logo{font-family:Audiowide,sans-serif;font-size:42px;text-shadow:0 0 15px #38bdf8}.nav-links a{margin-left:20px;color:#fff;text-decoration:none;font-weight:600}
+.register{padding:10px 20px;border-radius:30px;background:#2563eb}
+.hero{display:flex;align-items:center;justify-content:space-between;height:82vh;padding:20px 80px}
+.left,.right{width:50%}
+.lugia{width:500px;max-width:90%;animation:f 6s ease-in-out infinite;filter:drop-shadow(0 0 30px #38bdf8)}
+animation: lugiaFloat 6s ease-in-out infinite;
+@keyframes f{50%{transform:translateY(-15px)}}h1{font-family:Audiowide,sans-serif;font-size:62px;line-height:1.1}p{font-size:22px;color:#dbeafe;margin:25px 0 35px;max-width:520px}.buttons{display:flex;gap:20px}.btn-primary,.btn-secondary{text-decoration:none;padding:15px 30px;border-radius:35px;font-weight:700}.btn-primary{background:#2563eb;color:#fff}.btn-secondary{border:2px solid #60a5fa;color:#fff}.btn-primary:hover,.btn-secondary:hover{box-shadow:0 0 20px #38bdf8;transform:translateY(-3px)}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | Splitixy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/register.css">
+
+</head>
+
+<body>
+
+<nav>
+
+    <div class="logo">
+        Splitixy
+    </div>
+
+    <div class="nav-links">
+
+        <a th:href="@{/}">
+            Home
+        </a>
+
+        <a th:href="@{/login}" class="login-btn">
+            Login
+        </a>
+
+    </div>
+
+</nav>
+
+<section class="hero">
+
+    <!-- LEFT -->
+
+    <div class="left">
+
+        <h1>
+            Create Your<br>
+            Account.
+        </h1>
+
+        <p>
+            Join Splitixy and start splitting expenses today.
+        </p>
+
+        <form class="register-form">
+
+            <input type="text" placeholder="Full Name">
+
+            <input type="email" placeholder="Email">
+
+            <input type="password" placeholder="Password">
+
+            <input type="password" placeholder="Confirm Password">
+
+            <button type="submit">Create Account</button>
+
+        </form>
+
+        <div class="bottom">
+
+            Already have an account?
+
+            <a th:href="@{/login}">
+                Login
+            </a>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="right">
+
+        <img
+                th:src="@{/images/celebi.png}"
+                class="celebi"
+                alt="Celebi">
+
+    </div>
+
+</section>
+
+</body>
+
+</html>
