@@ -1,6 +1,26 @@
 <!DOCTYPE html><html xmlns:th="http://www.thymeleaf.org"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Splitixy Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" th:href="@{/css/style.css}"></head><body><div class="stars"></div><div class="moon"></div><div class="fog"></div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head><body><div class="stars"></div><div class="moon"></div><div class="fog"></div>
 <img th:src="@{/images/yveltal.png}" class="yveltal" alt="Yveltal">
 
-<img th:src="@{/images/darkrai.png}" class="darkrai"><div class="login-card"><h1 class="title">Splitixy</h1><p class="subtitle">"Enter the Nightmare".</p><form><input type="email" class="form-control mb-3" placeholder="Email"><input type="password" class="form-control mb-4" placeholder="Password"><button class="btn-login">⚡ Begin Journey</button></form><p class="register-text">New Trainer? <a th:href="@{/register}">Create Account</a></p></div></body></html>
+<img th:src="@{/images/darkrai.png}" class="darkrai"><div class="login-card"><h1 class="title">Splitixy</h1><p class="subtitle">"Enter the Nightmare".</p><form th:action="@{/login}" method="post">
+
+    <input
+            type="email"
+            name="email"
+            class="form-control mb-3"
+            placeholder="Email">
+
+    <input
+            type="password"
+            name="password"
+            class="form-control mb-4"
+            placeholder="Password">
+
+    <button type="submit" class="btn-login">
+        ⚡ Begin Journey
+    </button>
+
+</form><p class="register-text">New Trainer? <a th:href="@{/register}">Create Account</a></p></div></body></html>
