@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Splitixy Dashboard</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/dashboard.css}">
+
+</head>
+
+<body>
+
+<header class="dashboard-header">
+
+    <div class="logo">
+        Splitixy
+    </div>
+
+    <div class="header-right">
+
+        <a href="#">
+
+            <img th:src="@{/images/mew.png}"
+                 class="header-icon">
+
+            <span>History</span>
+
+        </a>
+
+        <a href="#">
+
+            <img th:src="@{/images/lucario.png}"
+                 class="header-icon">
+
+            <span>Profile</span>
+
+        </a>
+
+    </div>
+
+</header>
+
+
+<main>
+
+    <!-- LEFT SIDE -->
+
+    <section class="left-panel">
+
+        <!-- Welcome -->
+
+        <div class="welcome-card">
+
+            <div class="welcome-content">
+
+                <div class="welcome-text">
+
+                    <h2>Welcome back, Pankaj 👋</h2>
+
+                    <p>Let's settle some expenses today.</p>
+
+                </div>
+
+                <div class="welcome-image">
+
+                    <img th:src="@{/images/greninja.png}"
+                         class="welcome-pokemon">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OWE YOU -->
+
+        <div class="balance-card">
+
+            <h3>People Who Owe You</h3>
+
+            <div class="balance-content">
+
+                <div class="balance-list">
+
+                    <div class="person-row">
+
+                        <span>Rahul</span>
+
+                        <span>₹500</span>
+
+                    </div>
+
+                    <div class="person-row">
+
+                        <span>Aman</span>
+
+                        <span>₹250</span>
+
+                    </div>
+
+                    <div class="person-row">
+
+                        <span>Priya</span>
+
+                        <span>₹180</span>
+
+                    </div>
+
+                </div>
+
+                <div class="balance-image">
+
+                    <img th:src="@{/images/necrozma.png}"
+                         class="balance-pokemon">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- YOU OWE -->
+
+        <div class="balance-card">
+
+            <h3>People You Owe</h3>
+
+            <div class="balance-content">
+
+                <div class="balance-list">
+
+                    <div class="person-row">
+
+                        <span>Neha</span>
+
+                        <span>₹300</span>
+
+                    </div>
+
+                    <div class="person-row">
+
+                        <span>Rohan</span>
+
+                        <span>₹150</span>
+
+                    </div>
+
+                </div>
+
+                <div class="balance-image">
+
+                    <img th:src="@{/images/snorlax.png}"
+                         class="balance-pokemon">
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT SIDE -->
+
+    <aside class="right-panel">
+
+        <div class="action-card">
+
+            <h2>Quick Actions</h2>
+
+            <button class="action-btn">
+
+                <img th:src="@{/images/eevee.png}"
+                     class="button-pokemon">
+
+                <span>Create Group</span>
+
+            </button>
+
+            <button class="action-btn">
+
+                <img th:src="@{/images/scizor.png}"
+                     class="button-pokemon">
+
+                <span>Add Expense</span>
+
+            </button>
+
+            <button class="action-btn">
+
+                <img th:src="@{/images/gardevoir.png}"
+                     class="button-pokemon">
+
+                <span>My Groups</span>
+
+            </button>
+
+            <button class="action-btn">
+
+                <img th:src="@{/images/oshawott.png}"
+                     class="button-pokemon">
+
+                <span>Logout</span>
+
+            </button>
+
+        </div>
+
+    </aside>
+
+</main>
+
+
+<footer class="dashboard-footer">
+
+    <div class="summary-container">
+
+        <div class="summary-card">
+
+            <h3>Total You Receive</h3>
+
+            <h2>₹930</h2>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Total You Owe</h3>
+
+            <h2>₹450</h2>
+
+        </div>
+
+    </div>
+
+</footer>
+
+</body>
+
+</html>

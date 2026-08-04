@@ -119,3 +119,12 @@ animation:float 6s ease-in-out infinite;
 filter:drop-shadow(0 0 30px #52B788);
 }
 @keyframes float{50%{transform:translateY(-15px)}}
+.register-form{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.btn-register{
+    width:100%;
+}

@@ -90,15 +90,9 @@ body{
 .login-card{
     position:relative;
     z-index:5;
-    width:800px;
-    padding:50px;
+    width:560px;
+    padding:45px;
     border-radius:28px;
-    background:rgba(18,18,32,.72);
-    backdrop-filter:blur(18px);
-    border:1px solid rgba(255,255,255,.12);
-    box-shadow:
-        0 0 45px rgba(123,44,255,.35),
-        0 18px 60px rgba(0,0,0,.55);
     transform:translateY(-20px);
 }
 .title{
@@ -106,12 +100,13 @@ body{
     font-family:'Orbitron',sans-serif;
     color:#808080;
     letter-spacing:2px;
-    font-weight:800;
+    font-size:40px;
+    font-weight:700;
 }
 
 .subtitle{
     text-align:center;
-    font-family:'Audiowide',sans-serif;
+    font-family:'Michroma',sans-serif;
     font-size:22px;
     font-weight:600;
     color:#808080;
@@ -119,20 +114,30 @@ body{
 }
 .form-control{
     height:56px;
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.15);
-    color:#fff;
+    background:rgba(255,255,255,.08) !important;
+    border:1px solid rgba(255,255,255,.15) !important;
+    color:#fff !important;
+    border-radius:12px;
+    box-shadow:none !important;
 }
 
 .form-control::placeholder{
-    color:#d6d6d6;
+    color:#cfcfcf;
+}
+
+.form-control:focus{
+    background:rgba(255,255,255,.08) !important;
+    color:#fff !important;
+    border:1px solid #8b5cf6 !important;
+    box-shadow:0 0 15px rgba(139,92,246,.5) !important;
+    outline:none;
 }
 .btn-login{
-    width:100%;
+    width:472px;
     height:66px;
     border:none;
     border-radius:16px;
-    font-weight:800;
+    font-weight:600;
     color:#fff;
     background:linear-gradient(90deg,#6d28d9,#9333ea);
 }
@@ -150,3 +155,49 @@ body{
     color:#b784ff;
     text-decoration:none;
 }
+.welcome-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.welcome-pokemon{
+    width:90px;
+}
+.card-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.section-pokemon{
+    width:55px;
+}
+.header-right a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.header-icon{
+    width:34px;
+}
+.action-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    justify-content:flex-start;
+}
+.button-pokemon{
+
+    width:35px;
+}
+/* ===========================
+        DASHBOARD
+=========================== */
+

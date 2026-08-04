@@ -54,20 +54,30 @@
             Join Splitixy and start splitting expenses today.
         </p>
 
-        <form class="register-form">
 
-            <input type="text" placeholder="Full Name">
 
-            <input type="email" placeholder="Email">
+        <form th:action="@{/register}" method="post" class="register-form">
 
-            <input type="password" placeholder="Password">
+                <input type="text"
+                       name="fullName"
+                       class="form-control"
+                       placeholder="Full Name">
 
-            <input type="password" placeholder="Confirm Password">
+                <input type="email"
+                       name="email"
+                       class="form-control"
+                       placeholder="Email">
 
-            <button type="submit">Create Account</button>
+                <input type="password"
+                       name="password"
+                       class="form-control"
+                       placeholder="Password">
 
-        </form>
+                <button type="submit" class="btn-register">
+                    Create Account
+                </button>
 
+            </form>
         <div class="bottom">
 
             Already have an account?

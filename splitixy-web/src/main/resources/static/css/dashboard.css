@@ -1,0 +1,414 @@
+/* ===========================
+        RESET
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+            radial-gradient(circle at top,#45206d 0%,#171227 45%,#09050f 100%);
+
+    color:white;
+
+    font-family:'Segoe UI',sans-serif;
+
+}
+
+/* ===========================
+        HEADER
+=========================== */
+
+.dashboard-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:28px 70px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.logo{
+
+    font-family:'Orbitron',sans-serif;
+
+    font-size:58px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    color:white;
+
+    text-shadow:
+            0 0 12px rgba(162,89,255,.6),
+            0 0 25px rgba(123,44,255,.35);
+
+    transition:.3s;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    gap:35px;
+
+}
+
+.header-right a{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:white;
+
+    text-decoration:none;
+
+    font-size:18px;
+
+}
+
+.header-icon{
+
+    width:32px;
+
+    height:32px;
+
+    object-fit:contain;
+
+    transition:.3s;
+
+}
+
+.header-icon:hover{
+
+    transform:scale(1.15);
+
+}
+
+/* ===========================
+        MAIN
+=========================== */
+
+main{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    gap:35px;
+
+    padding:40px 70px;
+
+}
+
+/* ===========================
+        LEFT PANEL
+=========================== */
+
+.left-panel{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+}
+
+/* ===========================
+        WELCOME
+=========================== */
+
+.welcome-card{
+
+    background:rgba(255,255,255,.05);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 0 25px rgba(123,44,255,.18);
+
+}
+
+.welcome-content{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    align-items:center;
+
+}
+
+.welcome-text h2{
+
+    font-size:38px;
+
+    margin-bottom:10px;
+
+}
+
+.welcome-text p{
+
+    color:#d7d7d7;
+
+    font-size:18px;
+
+}
+
+.welcome-image{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.welcome-pokemon{
+
+    width:170px;
+
+    transition:.35s;
+
+}
+
+.welcome-pokemon:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* ===========================R
+        BALANCE CARD
+=========================== */
+
+.balance-card{
+
+    background:rgba(255,255,255,.05);
+
+    border-radius:22px;
+
+    padding:18px 20px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 0 25px rgba(123,44,255,.12);
+
+}
+
+.balance-card h3{
+
+    font-size:28px;
+
+    margin-bottom:20px;
+
+}
+
+.balance-content{
+
+    display:grid;
+
+    grid-template-columns:2fr 1fr;
+
+    align-items:center;
+
+}
+
+.balance-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+.person-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:16px 18px;
+
+    background:rgba(255,255,255,.05);
+
+    border-radius:14px;
+
+    transition:.3s;
+
+}
+
+.person-row:hover{
+
+    background:#4b2a73;
+
+    transform:translateX(6px);
+
+}
+
+.balance-image{
+
+    display:flex;
+
+    justify-content:center;
+
+}
+
+.balance-pokemon{
+
+    width:220px;
+
+    transition:.35s;
+
+}
+
+.balance-pokemon:hover{
+
+    transform:scale(1.06);
+
+}
+
+/* ===========================
+        RIGHT PANEL
+=========================== */
+
+.action-card{
+
+    background:rgba(255,255,255,.05);
+
+    border-radius:22px;
+
+    padding:28px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.action-card h2{
+
+    margin-bottom:25px;
+
+}
+
+.action-btn{
+
+    width:100%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    gap:18px;
+
+    margin-bottom:18px;
+
+    padding:16px 20px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    background:linear-gradient(90deg,#6f2cff,#9d4dff);
+
+    color:white;
+
+    font-size:18px;
+
+    font-weight:600;
+
+    transition:.35s;
+
+}
+
+.action-btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 18px rgba(157,77,255,.45);
+
+}
+
+.button-pokemon{
+
+    width:38px;
+
+    height:38px;
+
+    object-fit:contain;
+
+}
+
+/* ===========================
+        FOOTER
+=========================== */
+
+.dashboard-footer{
+
+    padding:0 70px 40px;
+
+}
+
+.summary-container{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:25px;
+
+}
+
+.summary-card{
+
+    background:rgba(255,255,255,.05);
+
+    border-radius:20px;
+
+    text-align:center;
+
+    padding:14px 18px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+}
+
+.summary-card h3{
+
+    margin-bottom:12px;
+
+}
+
+.summary-card h2{
+
+    font-size:42px;
+
+    color:#b784ff;
+
+}
