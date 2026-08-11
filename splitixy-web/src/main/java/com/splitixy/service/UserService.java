@@ -5,6 +5,7 @@ import com.splitixy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.splitixy.entity.User;
@@ -35,5 +36,11 @@ public class UserService {
         }
 
         return null;
+    }
+    public User getUserById(Integer id) {
+        return userRepository.findById(id).orElse(null);
+    }
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

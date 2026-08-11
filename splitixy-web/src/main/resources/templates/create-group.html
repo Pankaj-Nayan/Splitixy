@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Group - Splitixy</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div class="create-group-container">
+
+    <div class="create-group-card">
+
+        <h1>Create Group</h1>
+
+        <p>Create a group to start sharing expenses.</p>
+
+        <form th:action="@{/create-group}" method="post">
+
+            <input
+                    type="text"
+                    name="groupName"
+                    placeholder="Enter group name"
+                    required>
+
+            <button type="submit">
+                Create Group
+            </button>
+
+        </form>
+
+        <a th:href="@{/dashboard}">
+            ← Back to Dashboard
+        </a>
+        <h2>Add Member</h2>
+
+        <form th:action="@{'/group/' + ${groupId} + '/add-member'}" method="post">
+
+            <select name="userId" required>
+
+                <option value="">Select User</option>
+
+                <option th:each="user : ${allUsers}"
+                        th:value="${user.id}"
+                        th:text="${user.fullName}">
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Add Member
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

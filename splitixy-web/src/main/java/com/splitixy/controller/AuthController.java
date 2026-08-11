@@ -1,5 +1,7 @@
 
 package com.splitixy.controller;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.splitixy.entity.User;
 import com.splitixy.service.UserService;
@@ -26,13 +28,24 @@ public class AuthController {
 
     @PostMapping("/login")
     public String loginUser(@RequestParam String email,
-                            @RequestParam String password) {
-
+                            @RequestParam String password,
+                            HttpSession session) {
         User user = userService.login(email, password);
 
         if (user != null) {
+
+            session.setAttribute("loggedInUser", user);
+
             return "redirect:/dashboard";
         }
+
+        return "redirect:/login";
+    }
+
+    @PostMapping("/register")
+    public String registerUser(@ModelAttribute User user) {
+
+        userService.registerUser(user);
 
         return "redirect:/login";
     }

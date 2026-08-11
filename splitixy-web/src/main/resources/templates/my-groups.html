@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Groups - Splitixy</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div class="create-group-container">
+
+    <div class="create-group-card">
+
+        <h1>My Groups</h1>
+
+        <p>Your expense groups</p>
+
+        <div th:if="${groups.isEmpty()}">
+
+            <p>You haven't created any groups yet.</p>
+
+            <a th:href="@{/create-group}">
+                Create Your First Group
+            </a>
+
+        </div>
+
+
+        <div th:unless="${groups.isEmpty()}">
+
+            <div th:each="group : ${groups}">
+
+                <h3 th:text="${group.groupName}">
+                    Group Name
+                </h3>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+        <a th:href="@{/dashboard}">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Group - Splitixy</title>
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+</head>
+
+<body>
+
+<div class="create-group-container">
+
+    <div class="create-group-card">
+
+        <h1>Group Members</h1>
+
+        <p>Members in this group</p>
+
+
+        <!-- Current Members -->
+
+        <div th:if="${users.isEmpty()}">
+
+            <p>No members yet.</p>
+
+        </div>
+
+        <div th:unless="${users.isEmpty()}">
+
+            <div th:each="user : ${users}">
+
+                <p>
+                    👤 <span th:text="${user.fullName}">User</span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- Add Member -->
+
+        <h2>Add Member</h2>
+
+        <form th:action="@{'/group/' + ${groupId} + '/add-member'}"
+              method="post">
+
+            <select name="userId" required>
+
+                <option value="">
+                    Select User
+                </option>
+
+                <option th:each="u : ${allUsers}"
+                        th:value="${u.id}"
+                        th:text="${u.fullName}">
+                </option>
+
+            </select>
+
+            <button type="submit">
+                Add Member
+            </button>
+
+        </form>
+
+
+        <br>
+
+
+        <!-- Back -->
+
+        <a th:href="@{/my-groups}">
+            ← Back to My Groups
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

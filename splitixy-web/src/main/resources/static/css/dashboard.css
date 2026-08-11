@@ -56,7 +56,6 @@ body{
             0 0 25px rgba(123,44,255,.35);
 
     transition:.3s;
-
 }
 
 .header-right{
@@ -411,4 +410,7 @@ main{
 
     color:#b784ff;
 
+}
+.action-btn {
+    text-decoration: none;
 }

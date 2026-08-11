@@ -5,17 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb27a00c-dd0c-4f5a-ba7b-04b52f237f0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/DashboardController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/dashboard.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/ExpenseGroupController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/ExpenseGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/GroupMember.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/GroupMemberId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseGroupRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/GroupMemberRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/ExpenseGroupService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/GroupMemberService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/create-group.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/group-details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/my-groups.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/register.css" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/register.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/style.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/static/css/dashboard.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

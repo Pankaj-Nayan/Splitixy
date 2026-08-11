@@ -178,41 +178,48 @@
 
             <h2>Quick Actions</h2>
 
-            <button class="action-btn">
+            <!-- Create Group -->
+            <a th:href="@{/create-group}" class="action-btn">
 
                 <img th:src="@{/images/eevee.png}"
                      class="button-pokemon">
 
                 <span>Create Group</span>
 
-            </button>
+            </a>
 
-            <button class="action-btn">
+
+            <!-- Add Expense -->
+            <a th:href="@{/add-expense}" class="action-btn">
 
                 <img th:src="@{/images/scizor.png}"
                      class="button-pokemon">
 
                 <span>Add Expense</span>
 
-            </button>
+            </a>
 
-            <button class="action-btn">
+
+            <!-- My Groups -->
+            <a th:href="@{/my-groups}" class="action-btn">
 
                 <img th:src="@{/images/gardevoir.png}"
                      class="button-pokemon">
 
                 <span>My Groups</span>
 
-            </button>
+            </a>
 
-            <button class="action-btn">
+
+            <!-- Logout -->
+            <a th:href="@{/logout}" class="action-btn">
 
                 <img th:src="@{/images/oshawott.png}"
                      class="button-pokemon">
 
                 <span>Logout</span>
 
-            </button>
+            </a>
 
         </div>
 
