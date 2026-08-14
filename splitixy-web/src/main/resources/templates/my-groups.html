@@ -35,19 +35,20 @@
 
         </div>
 
-
         <div th:unless="${groups.isEmpty()}">
 
             <div th:each="group : ${groups}">
 
-                <h3 th:text="${group.groupName}">
-                    Group Name
+                <h3>
+                    <a th:href="@{'/group/' + ${group.groupId}}"
+                       th:text="${group.groupName}">
+                        Group Name
+                    </a>
                 </h3>
 
             </div>
 
         </div>
-
 
         <br>
 

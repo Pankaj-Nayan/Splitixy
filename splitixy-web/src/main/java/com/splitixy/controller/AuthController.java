@@ -30,15 +30,18 @@ public class AuthController {
     public String loginUser(@RequestParam String email,
                             @RequestParam String password,
                             HttpSession session) {
+
+        System.out.println("LOGIN REQUEST: " + email);
+
         User user = userService.login(email, password);
 
         if (user != null) {
-
+            System.out.println("LOGIN SUCCESS");
             session.setAttribute("loggedInUser", user);
-
             return "redirect:/dashboard";
         }
 
+        System.out.println("LOGIN FAILED");
         return "redirect:/login";
     }
 

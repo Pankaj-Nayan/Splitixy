@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb27a00c-dd0c-4f5a-ba7b-04b52f237f0a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/ExpenseController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/Expense.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/ExpenseSplit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseSplitRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/ExpenseService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/add-expense.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/splitixy-web/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/group-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/group-details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/my-groups.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/my-groups.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
