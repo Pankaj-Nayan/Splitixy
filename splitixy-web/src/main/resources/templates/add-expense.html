@@ -23,12 +23,30 @@
 <div class="container mt-5">
 
     <div class="card p-4 mx-auto"
-         style="max-width: 500px;">
+         style="max-width: 600px;">
 
-        <h2 class="mb-4">💸 Add Expense</h2>
+        <h2 class="mb-4">
+            💸 Add Expense
+        </h2>
+
+
+        <!-- Error -->
+
+        <div th:if="${error}"
+             class="alert alert-danger">
+
+            <span th:text="${error}">
+                Error
+            </span>
+
+        </div>
+
 
         <form th:action="@{'/group/' + ${groupId} + '/expense/add'}"
               method="post">
+
+
+            <!-- Description -->
 
             <div class="mb-3">
 
@@ -45,22 +63,119 @@
             </div>
 
 
+            <!-- Amount -->
+
             <div class="mb-3">
 
                 <label class="form-label">
-                    Amount
+                    Total Amount
                 </label>
 
                 <input type="number"
+                       id="totalAmount"
                        name="amount"
                        class="form-control"
                        step="0.01"
                        min="0.01"
-                       placeholder="e.g. 1200"
+                       placeholder="e.g. 1000"
                        required>
 
             </div>
 
+
+            <!-- Split Type -->
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Split Type
+                </label>
+
+                <select name="splitType"
+                        id="splitType"
+                        class="form-select"
+                        onchange="changeSplitType()"
+                        required>
+
+                    <option value="equal">
+                        Equal Split
+                    </option>
+
+                    <option value="custom">
+                        Custom Split
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Equal Split -->
+
+            <div id="equalSection">
+
+                <div class="alert alert-info">
+
+                    The total amount will be divided
+                    equally among all group members.
+
+                </div>
+
+            </div>
+
+
+            <!-- Custom Split -->
+
+            <div id="customSection"
+                 style="display: none;">
+
+                <h5>
+                    Enter each person's share
+                </h5>
+
+                <div th:each="user : ${users}"
+                     class="mb-3">
+
+                    <label class="form-label">
+
+                        <span th:text="${user.fullName}">
+                            User
+                        </span>
+
+                    </label>
+
+                    <input type="number"
+                           class="form-control custom-amount"
+                           th:name="'amount_' + ${user.id}"
+                           step="0.01"
+                           min="0"
+                           value="0">
+
+                </div>
+
+
+                <div class="alert alert-secondary">
+
+                    Total entered:
+
+                    ₹<span id="customTotal">
+                        0.00
+                    </span>
+
+                    <br>
+
+                    Required:
+
+                    ₹<span id="requiredTotal">
+                        0.00
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
 
             <button type="submit"
                     class="btn btn-primary">
@@ -82,6 +197,84 @@
     </div>
 
 </div>
+
+
+<script>
+
+    function changeSplitType() {
+
+        const splitType =
+            document.getElementById("splitType").value;
+
+        const equalSection =
+            document.getElementById("equalSection");
+
+        const customSection =
+            document.getElementById("customSection");
+
+
+        if (splitType === "custom") {
+
+            equalSection.style.display = "none";
+
+            customSection.style.display = "block";
+
+        } else {
+
+            equalSection.style.display = "block";
+
+            customSection.style.display = "none";
+
+        }
+    }
+
+
+    const amountInput =
+        document.getElementById("totalAmount");
+
+    const customInputs =
+        document.querySelectorAll(".custom-amount");
+
+
+    function updateCustomTotal() {
+
+        let total = 0;
+
+        customInputs.forEach(function(input) {
+
+            total +=
+                parseFloat(input.value) || 0;
+
+        });
+
+
+        document.getElementById("customTotal")
+            .textContent = total.toFixed(2);
+
+
+        document.getElementById("requiredTotal")
+            .textContent =
+                (parseFloat(amountInput.value) || 0)
+                .toFixed(2);
+    }
+
+
+    amountInput.addEventListener(
+        "input",
+        updateCustomTotal
+    );
+
+
+    customInputs.forEach(function(input) {
+
+        input.addEventListener(
+            "input",
+            updateCustomTotal
+        );
+
+    });
+
+</script>
 
 </body>
 

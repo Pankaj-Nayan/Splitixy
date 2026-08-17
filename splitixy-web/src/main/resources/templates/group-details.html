@@ -21,12 +21,14 @@
 
     <div class="create-group-card">
 
+        <!-- ========================= -->
+        <!-- GROUP MEMBERS -->
+        <!-- ========================= -->
+
         <h1>Group Members</h1>
 
         <p>Members in this group</p>
 
-
-        <!-- Current Members -->
 
         <div th:if="${users.isEmpty()}">
 
@@ -34,12 +36,58 @@
 
         </div>
 
+
         <div th:unless="${users.isEmpty()}">
 
             <div th:each="user : ${users}">
 
                 <p>
-                    👤 <span th:text="${user.fullName}">User</span>
+                    👤
+                    <span th:text="${user.fullName}">
+                        User
+                    </span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- ========================= -->
+        <!-- EXPENSES -->
+        <!-- ========================= -->
+
+        <h2>💰 Expenses</h2>
+
+
+        <div th:if="${expenses.isEmpty()}">
+
+            <p>No expenses yet.</p>
+
+        </div>
+
+
+        <div th:unless="${expenses.isEmpty()}">
+
+            <div th:each="expense : ${expenses}">
+
+                <p>
+
+                    <strong
+                            th:text="${expense.description}">
+                        Dinner
+                    </strong>
+
+                    -
+
+                    ₹<span
+                        th:text="${expense.amount}">
+                        0
+                    </span>
+
                 </p>
 
             </div>
@@ -52,12 +100,12 @@
 
         <!-- Add Expense -->
 
-        <h2>Expenses</h2>
-
         <a th:href="@{'/group/' + ${groupId} + '/expense/add'}">
 
             <button type="button">
+
                 💸 Add Expense
+
             </button>
 
         </a>
@@ -67,28 +115,99 @@
         <br>
 
 
-        <!-- Add Member -->
+        <!-- ========================= -->
+        <!-- BALANCES -->
+        <!-- ========================= -->
+
+        <h2>⚖️ Balances</h2>
+
+
+        <div th:each="user : ${users}">
+
+            <p>
+
+                <strong
+                        th:text="${user.fullName}">
+                    User
+                </strong>
+
+                <span
+                        th:if="${balances[user.id] > 0}">
+
+                    should receive ₹
+
+                    <span
+                            th:text="${#numbers.formatDecimal(balances[user.id], 1, 2)}">
+                        0.00
+                    </span>
+
+                </span>
+
+
+                <span
+                        th:if="${balances[user.id] < 0}">
+
+                    owes ₹
+
+                    <span
+                            th:text="${#numbers.formatDecimal(T(java.lang.Math).abs(balances[user.id]), 1, 2)}">
+                        0.00
+                    </span>
+
+                </span>
+
+
+                <span
+                        th:if="${balances[user.id] == 0}">
+
+                    is settled.
+
+                </span>
+
+            </p>
+
+        </div>
+
+
+        <br>
+
+
+        <!-- ========================= -->
+        <!-- ADD MEMBER -->
+        <!-- ========================= -->
 
         <h2>Add Member</h2>
 
-        <form th:action="@{'/group/' + ${groupId} + '/add-member'}"
-              method="post">
 
-            <select name="userId" required>
+        <form
+                th:action="@{'/group/' + ${groupId} + '/add-member'}"
+                method="post">
+
+
+            <select name="userId"
+                    required>
 
                 <option value="">
+
                     Select User
+
                 </option>
 
-                <option th:each="u : ${allUsers}"
+
+                <option
+                        th:each="u : ${allUsers}"
                         th:value="${u.id}"
                         th:text="${u.fullName}">
+
                 </option>
 
             </select>
 
+
             <button type="submit">
+
                 Add Member
+
             </button>
 
         </form>
@@ -97,10 +216,14 @@
         <br>
 
 
-        <!-- Back -->
+        <!-- ========================= -->
+        <!-- BACK -->
+        <!-- ========================= -->
 
         <a th:href="@{/my-groups}">
+
             ← Back to My Groups
+
         </a>
 
     </div>

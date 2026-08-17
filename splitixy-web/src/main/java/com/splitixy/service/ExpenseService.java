@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ExpenseService {
@@ -24,36 +25,68 @@ public class ExpenseService {
     private GroupMemberRepository groupMemberRepository;
 
 
+    // Save expense
     public Expense addExpense(Expense expense) {
 
-        // Save expense first
-        Expense savedExpense = expenseRepository.save(expense);
+        return expenseRepository.save(expense);
+    }
 
-        // Get all members of the group
+
+    // Equal split
+    public void createEqualSplits(Expense expense) {
+
         List<GroupMember> members =
                 groupMemberRepository.findByIdGroupId(
                         expense.getGroupId()
                 );
 
-        // Calculate equal share
+        if (members.isEmpty()) {
+            return;
+        }
+
         double splitAmount =
                 expense.getAmount() / members.size();
 
-        // Create split for every member
         for (GroupMember member : members) {
 
             ExpenseSplit split = new ExpenseSplit();
 
-            split.setExpenseId(savedExpense.getExpenseId());
+            split.setExpenseId(expense.getExpenseId());
 
-            split.setUserId(member.getId().getUserId());
+            split.setUserId(
+                    member.getId().getUserId()
+            );
 
             split.setAmountOwed(splitAmount);
 
             expenseSplitRepository.save(split);
         }
+    }
 
-        return savedExpense;
+
+    // Custom split
+    public void createCustomSplits(
+            Expense expense,
+            Map<Integer, Double> splitAmounts) {
+
+        for (Map.Entry<Integer, Double> entry
+                : splitAmounts.entrySet()) {
+
+            if (entry.getValue() == null ||
+                    entry.getValue() < 0) {
+                continue;
+            }
+
+            ExpenseSplit split = new ExpenseSplit();
+
+            split.setExpenseId(expense.getExpenseId());
+
+            split.setUserId(entry.getKey());
+
+            split.setAmountOwed(entry.getValue());
+
+            expenseSplitRepository.save(split);
+        }
     }
 
 
