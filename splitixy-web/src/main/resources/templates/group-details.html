@@ -121,53 +121,38 @@
 
         <h2>⚖️ Balances</h2>
 
+        <div th:if="${debts.isEmpty()}">
 
-        <div th:each="user : ${users}">
-
-            <p>
-
-                <strong
-                        th:text="${user.fullName}">
-                    User
-                </strong>
-
-                <span
-                        th:if="${balances[user.id] > 0}">
-
-                    should receive ₹
-
-                    <span
-                            th:text="${#numbers.formatDecimal(balances[user.id], 1, 2)}">
-                        0.00
-                    </span>
-
-                </span>
-
-
-                <span
-                        th:if="${balances[user.id] < 0}">
-
-                    owes ₹
-
-                    <span
-                            th:text="${#numbers.formatDecimal(T(java.lang.Math).abs(balances[user.id]), 1, 2)}">
-                        0.00
-                    </span>
-
-                </span>
-
-
-                <span
-                        th:if="${balances[user.id] == 0}">
-
-                    is settled.
-
-                </span>
-
-            </p>
+            <p>Everyone is settled. 🎉</p>
 
         </div>
 
+        <div th:unless="${debts.isEmpty()}">
+
+            <div th:each="debt : ${debts}">
+
+                <p>
+
+                    <strong th:text="${debt.debtor}">
+                        Person
+                    </strong>
+
+                    owes
+
+                    <strong th:text="${debt.creditor}">
+                        Person
+                    </strong>
+
+                    ₹<span
+                        th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">
+                0.00
+            </span>
+
+                </p>
+
+            </div>
+
+        </div>
 
         <br>
 

@@ -31,11 +31,9 @@ public class BalanceService {
 
         Map<Integer, Double> balances = new HashMap<>();
 
-        // Get group members
         List<GroupMember> members =
                 groupMemberService.getMembers(groupId);
 
-        // Initialize everyone with 0
         for (GroupMember member : members) {
 
             Integer userId =
@@ -45,7 +43,6 @@ public class BalanceService {
         }
 
 
-        // Get all expenses
         List<Expense> expenses =
                 expenseService.getExpensesByGroup(groupId);
 
@@ -55,19 +52,13 @@ public class BalanceService {
             Integer payerId =
                     expense.getPaidBy();
 
-            double expenseAmount =
-                    expense.getAmount();
-
-
-            // Payer paid the whole expense
             balances.put(
                     payerId,
                     balances.getOrDefault(payerId, 0.0)
-                            + expenseAmount
+                            + expense.getAmount()
             );
 
 
-            // Subtract what every person owes
             List<ExpenseSplit> splits =
                     expenseSplitRepository
                             .findByExpenseId(
@@ -80,17 +71,140 @@ public class BalanceService {
                 Integer userId =
                         split.getUserId();
 
-                double owed =
-                        split.getAmountOwed();
-
                 balances.put(
                         userId,
                         balances.getOrDefault(userId, 0.0)
-                                - owed
+                                - split.getAmountOwed()
                 );
             }
         }
 
         return balances;
+    }
+
+
+    public List<Debt> calculateDebts(Integer groupId) {
+
+        Map<Integer, Double> balances =
+                calculateBalances(groupId);
+
+
+        List<Integer> creditors = new ArrayList<>();
+        List<Integer> debtors = new ArrayList<>();
+
+
+        for (Map.Entry<Integer, Double> entry
+                : balances.entrySet()) {
+
+            if (entry.getValue() > 0.01) {
+
+                creditors.add(entry.getKey());
+
+            } else if (entry.getValue() < -0.01) {
+
+                debtors.add(entry.getKey());
+            }
+        }
+
+
+        List<Debt> debts = new ArrayList<>();
+
+        int i = 0;
+        int j = 0;
+
+
+        while (i < debtors.size()
+                && j < creditors.size()) {
+
+            Integer debtorId = debtors.get(i);
+            Integer creditorId = creditors.get(j);
+
+
+            double debt =
+                    -balances.get(debtorId);
+
+            double credit =
+                    balances.get(creditorId);
+
+
+            double amount =
+                    Math.min(debt, credit);
+
+
+            User debtor =
+                    userService.getUserById(debtorId);
+
+            User creditor =
+                    userService.getUserById(creditorId);
+
+
+            if (debtor != null && creditor != null) {
+
+                debts.add(
+                        new Debt(
+                                debtor.getFullName(),
+                                creditor.getFullName(),
+                                amount
+                        )
+                );
+            }
+
+
+            balances.put(
+                    debtorId,
+                    balances.get(debtorId) + amount
+            );
+
+            balances.put(
+                    creditorId,
+                    balances.get(creditorId) - amount
+            );
+
+
+            if (Math.abs(balances.get(debtorId)) < 0.01) {
+                i++;
+            }
+
+            if (Math.abs(balances.get(creditorId)) < 0.01) {
+                j++;
+            }
+        }
+
+
+        return debts;
+    }
+
+
+    public static class Debt {
+
+        private String debtor;
+        private String creditor;
+        private double amount;
+
+
+        public Debt(
+                String debtor,
+                String creditor,
+                double amount) {
+
+            this.debtor = debtor;
+            this.creditor = creditor;
+            this.amount = amount;
+        }
+
+
+        public String getDebtor() {
+            return debtor;
+        }
+
+
+        public String getCreditor() {
+            return creditor;
+        }
+
+
+        public double getAmount() {
+            return amount;
+        }
     }
 }

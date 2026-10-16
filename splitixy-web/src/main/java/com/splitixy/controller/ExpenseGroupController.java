@@ -177,6 +177,10 @@ public class ExpenseGroupController {
                 balanceService.calculateBalances(
                         groupId
                 );
+        List<BalanceService.Debt> debts =
+                balanceService.calculateDebts(groupId);
+
+        model.addAttribute("debts", debts);
 
 
         // -------------------------
