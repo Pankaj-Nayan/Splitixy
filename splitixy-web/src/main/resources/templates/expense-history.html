@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense History | Splitixy</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="create-group-container">
+    <section class="create-group-card">
+        <h1 th:text="${personalHistory == true ? 'Your Expense History' : 'Group Expense History'}">
+            Expense History
+        </h1>
+        <p th:if="${history.isEmpty()}">No expenses to show yet.</p>
+        <article th:each="expense : ${history}" class="expense-history-entry">
+            <h2>
+                <span th:text="${expense.description}">Expense</span>
+                · ₹<span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}">0.00</span>
+            </h2>
+            <p>
+                <strong th:text="${expense.groupName}">Group</strong>
+                · Paid by <strong th:text="${expense.payerName}">Member</strong>
+                · <span th:text="${expense.splitType}">Split</span>
+                <span th:if="${expense.expenseDate != null}">
+                    · <time th:datetime="${expense.expenseDate}"
+                            th:text="${#temporals.format(expense.expenseDate, 'dd MMM yyyy HH:mm')}">Date</time>
+                </span>
+            </p>
+            <p th:if="${expense.creatorName != null}">
+                Recorded by <span th:text="${expense.creatorName}">Member</span>
+            </p>
+            <p th:if="${expense.shares.isEmpty()}" role="alert">
+                Legacy expense shares are missing; it is excluded from reliable balance calculations.
+            </p>
+            <ul th:if="${!expense.shares.isEmpty()}">
+                <li th:each="share : ${expense.shares}">
+                    <span th:text="${share.memberName}">Member</span> share:
+                    ₹<span th:text="${#numbers.formatDecimal(share.amount, 1, 2)}">0.00</span>
+                </li>
+            </ul>
+            <a th:href="@{'/group/' + ${expense.groupId}}">Open group</a>
+            <hr>
+        </article>
+        <a th:href="@{/dashboard}">Back to dashboard</a>
+    </section>
+</main>
+</body>
+</html>

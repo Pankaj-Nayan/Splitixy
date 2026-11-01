@@ -4,36 +4,49 @@ package com.splitixy.controller;
 import com.splitixy.entity.User;
 import com.splitixy.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Locale;
+import java.util.Objects;
 
 @Controller
 public class AuthController {
 
     private final UserService userService;
     private final OAuth2AuthorizedClientService authorizedClientService;
+    private final SecurityContextRepository securityContextRepository;
     private final RestClient restClient;
 
     public AuthController(
             UserService userService,
-            OAuth2AuthorizedClientService authorizedClientService) {
+            OAuth2AuthorizedClientService authorizedClientService,
+            SecurityContextRepository securityContextRepository) {
         this.userService = userService;
         this.authorizedClientService = authorizedClientService;
+        this.securityContextRepository = securityContextRepository;
         this.restClient = RestClient.builder().build();
     }
 
@@ -46,7 +59,9 @@ public class AuthController {
     public String login(
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            HttpSession session) {
+            HttpSession session,
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
         User user = userService.login(email, password);
 
@@ -54,7 +69,16 @@ public class AuthController {
             return "redirect:/login?error";
         }
 
-        session.setAttribute("loggedInUser", user);
+        User sessionUser = createSessionUser(user);
+        request.changeSessionId();
+        session.setAttribute("loggedInUser", sessionUser);
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(new UsernamePasswordAuthenticationToken(
+                sessionUser,
+                null,
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))));
+        SecurityContextHolder.setContext(context);
+        securityContextRepository.saveContext(context, request, response);
         return "redirect:/dashboard";
     }
 
@@ -63,28 +87,37 @@ public class AuthController {
         return "register";
     }
 
-    @GetMapping("/oauth2/google/register")
-    public String googleRegister(HttpSession session) {
-        session.setAttribute("oauthIntent", "register");
-        return "redirect:/oauth2/authorization/google";
-    }
+    @PostMapping("/register")
+    public String register(
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password) {
 
-    @GetMapping("/oauth2/google/login")
-    public String googleLogin(HttpSession session) {
-        session.setAttribute("oauthIntent", "login");
-        return "redirect:/oauth2/authorization/google";
-    }
+        String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+        if (name.isBlank()
+                || password.length() < 8
+                || password.isBlank()
+                || !normalizedEmail.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+            return "redirect:/register?error=invalid";
+        }
 
-    @GetMapping("/oauth2/github/register")
-    public String githubRegister(HttpSession session) {
-        session.setAttribute("oauthIntent", "register");
-        return "redirect:/oauth2/authorization/github";
-    }
+        if (userService.findByEmail(normalizedEmail) != null) {
+            return "redirect:/register?error=account-exists";
+        }
 
-    @GetMapping("/oauth2/github/login")
-    public String githubLogin(HttpSession session) {
-        session.setAttribute("oauthIntent", "login");
-        return "redirect:/oauth2/authorization/github";
+        User user = new User();
+        user.setFullName(name.trim());
+        user.setEmail(normalizedEmail);
+        user.setPassword(password);
+        try {
+            userService.registerUser(user);
+        } catch (DataIntegrityViolationException exception) {
+            if (userService.findByEmail(normalizedEmail) == null) {
+                throw exception;
+            }
+            return "redirect:/register?error=account-exists";
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/oauth-success")
@@ -98,69 +131,91 @@ public class AuthController {
         }
 
         String provider = authentication.getAuthorizedClientRegistrationId();
-        String email;
-        String name;
-
-        if ("github".equals(provider)) {
-            email = getGitHubEmail(authentication, oauthUser);
-            name = oauthUser.getAttribute("name");
-
-            if (name == null || name.isBlank()) {
-                name = oauthUser.getAttribute("login");
-            }
-        } else if ("google".equals(provider)) {
-            email = oauthUser.getAttribute("email");
-            name = oauthUser.getAttribute("name");
-        } else {
+        if (!"github".equals(provider) && !"google".equals(provider)) {
             return "redirect:/login?error=provider";
         }
 
-        if (email == null || email.isBlank()) {
-            return "redirect:/login?error=email";
+        Object rawProviderId = oauthUser.getAttribute("id");
+        if (rawProviderId == null) {
+            rawProviderId = oauthUser.getAttribute("sub");
+        }
+        String providerUserId = Objects.toString(rawProviderId, "").trim();
+        if (providerUserId.isEmpty()) {
+            return "redirect:/login?error=oauth-profile";
         }
 
-        String intent = (String) session.getAttribute("oauthIntent");
-        session.removeAttribute("oauthIntent");
-
-        User existingUser = userService.findByEmail(email);
-
-        if ("register".equals(intent)) {
-            if (existingUser != null) {
-                return "redirect:/login?error=account-exists";
+        User currentUser = getSessionUser(session);
+        User user = userService.findOAuthUser(provider, providerUserId);
+        if (user != null) {
+            if (currentUser != null && !currentUser.getId().equals(user.getId())) {
+                return "redirect:/dashboard?error=oauth-account-linked";
             }
-
-            User user = new User();
-
-            String displayName =
-                    (name != null && !name.isBlank())
-                            ? name
-                            : email.substring(0, email.indexOf("@"));
-
-            user.setFullName(displayName);
-            user.setEmail(email);
-            user.setPassword(UUID.randomUUID().toString());
-
-            userService.registerUser(user);
-            return "redirect:/login?registered=" + provider;
+            session.setAttribute("loggedInUser", createSessionUser(user));
+            return "redirect:/dashboard";
         }
 
-        if (existingUser == null) {
-            return "redirect:/register?error=account-not-found";
+        if (currentUser != null) {
+            try {
+                user = userService.linkOAuthAccount(provider, providerUserId, currentUser);
+            } catch (UserService.OAuthAccountAlreadyLinkedException exception) {
+                return "redirect:/dashboard?error=oauth-account-linked";
+            } catch (DataIntegrityViolationException exception) {
+                user = userService.findOAuthUser(provider, providerUserId);
+                if (user == null || !currentUser.getId().equals(user.getId())) {
+                    return "redirect:/dashboard?error=oauth-account-conflict";
+                }
+            }
+            session.setAttribute("loggedInUser", createSessionUser(user));
+            return "redirect:/dashboard";
         }
 
-        session.setAttribute("loggedInUser", existingUser);
+        String email;
+        String name = oauthUser.getAttribute("name");
+        if ("github".equals(provider)) {
+            if (name == null || name.isBlank()) {
+                name = oauthUser.getAttribute("login");
+            }
+            try {
+                email = getGitHubEmail(authentication);
+            } catch (RestClientException exception) {
+                return "redirect:/login?error=github-email-unavailable";
+            }
+        } else {
+            email = oauthUser.getAttribute("email");
+            if (!Boolean.TRUE.equals(oauthUser.getAttribute("email_verified"))) {
+                email = null;
+            }
+        }
+
+        if (email == null || email.isBlank()) {
+            return "redirect:/login?error=verified-email-required";
+        }
+
+        if (userService.findByEmail(email) != null) {
+            return "redirect:/login?error=account-link-required";
+        }
+
+        try {
+            user = userService.createOAuthUser(
+                    provider, providerUserId, email, name);
+        } catch (UserService.OAuthEmailAlreadyRegisteredException exception) {
+            return "redirect:/login?error=account-link-required";
+        } catch (DataIntegrityViolationException exception) {
+            user = userService.findOAuthUser(provider, providerUserId);
+            if (user == null) {
+                if (userService.findByEmail(email) != null) {
+                    return "redirect:/login?error=account-link-required";
+                }
+                return "redirect:/login?error=account-conflict";
+            }
+        }
+
+        session.setAttribute("loggedInUser", createSessionUser(user));
         return "redirect:/dashboard";
     }
 
     private String getGitHubEmail(
-            OAuth2AuthenticationToken authentication,
-            OAuth2User oauthUser) {
-
-        String profileEmail = oauthUser.getAttribute("email");
-
-        if (profileEmail != null && !profileEmail.isBlank()) {
-            return profileEmail;
-        }
+            OAuth2AuthenticationToken authentication) {
 
         OAuth2AuthorizedClient client =
                 authorizedClientService.loadAuthorizedClient(
@@ -193,5 +248,20 @@ public class AuthController {
                 .findFirst()
                 .orElse(null);
     }
-}
 
+    private User getSessionUser(HttpSession session) {
+        Object currentUser = session.getAttribute("loggedInUser");
+        if (currentUser instanceof User user && user.getId() != null) {
+            return user;
+        }
+        return null;
+    }
+
+    private User createSessionUser(User user) {
+        User sessionUser = new User();
+        sessionUser.setId(user.getId());
+        sessionUser.setFullName(user.getFullName());
+        sessionUser.setEmail(user.getEmail());
+        return sessionUser;
+    }
+}

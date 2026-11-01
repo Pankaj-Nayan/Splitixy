@@ -41,10 +41,22 @@
 
         </div>
 
-
         <form th:action="@{'/group/' + ${groupId} + '/expense/add'}"
               method="post">
 
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+
+            <div class="mb-3">
+                <label for="paidBy" class="form-label">Paid by</label>
+                <select id="paidBy" name="paidBy" class="form-select" required>
+                    <option th:each="user : ${users}"
+                            th:value="${user.id}"
+                            th:text="${user.fullName != null and !#strings.isEmpty(user.fullName) ? user.fullName : user.email}"
+                            th:selected="${#strings.toString(user.id) == #strings.toString(selectedPayerId)}">
+                        Member
+                    </option>
+                </select>
+            </div>
 
             <!-- Description -->
 
@@ -58,6 +70,7 @@
                        name="description"
                        class="form-control"
                        placeholder="e.g. Dinner"
+                       th:value="${descriptionValue}"
                        required>
 
             </div>
@@ -75,6 +88,7 @@
                        id="totalAmount"
                        name="amount"
                        class="form-control"
+                       th:value="${amountValue}"
                        step="0.01"
                        min="0.01"
                        placeholder="e.g. 1000"
@@ -97,11 +111,11 @@
                         onchange="changeSplitType()"
                         required>
 
-                    <option value="equal">
+                    <option value="EQUAL" th:selected="${splitType == null or splitType == 'EQUAL'}">
                         Equal Split
                     </option>
 
-                    <option value="custom">
+                    <option value="CUSTOM" th:selected="${splitType == 'CUSTOM'}">
                         Custom Split
                     </option>
 
@@ -147,6 +161,7 @@
                     <input type="number"
                            class="form-control custom-amount"
                            th:name="'amount_' + ${user.id}"
+                           th:value="${customShares != null ? customShares[#strings.toString(user.id)] : '0.00'}"
                            step="0.01"
                            min="0"
                            value="0">
@@ -213,7 +228,7 @@
             document.getElementById("customSection");
 
 
-        if (splitType === "custom") {
+        if (splitType === "CUSTOM") {
 
             equalSection.style.display = "none";
 
@@ -273,6 +288,9 @@
         );
 
     });
+
+    changeSplitType();
+    updateCustomTotal();
 
 </script>
 

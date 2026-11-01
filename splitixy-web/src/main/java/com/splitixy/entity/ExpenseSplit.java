@@ -1,6 +1,7 @@
 package com.splitixy.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "expense_splits")
@@ -17,8 +18,8 @@ public class ExpenseSplit {
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "amount_owed", nullable = false)
-    private Double amountOwed;
+    @Column(name = "amount_owed", nullable = false, precision = 19, scale = 2)
+    private BigDecimal amountOwed;
 
     public ExpenseSplit() {
     }
@@ -47,11 +48,11 @@ public class ExpenseSplit {
         this.userId = userId;
     }
 
-    public Double getAmountOwed() {
+    public BigDecimal getAmountOwed() {
         return amountOwed;
     }
 
-    public void setAmountOwed(Double amountOwed) {
+    public void setAmountOwed(BigDecimal amountOwed) {
         this.amountOwed = amountOwed;
     }
 }

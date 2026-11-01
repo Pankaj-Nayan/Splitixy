@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@300;400;500;600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/register.css">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
 
 </head>
 
@@ -55,23 +55,31 @@
             Join Splitixy and start splitting expenses today.
         </p>
 
+        <p th:if="${param.error}" class="error" role="alert">
+            Registration could not be completed. Check your details or try another account.
+        </p>
 
         <form th:action="@{/register}" method="post" class="register-form">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
             <input type="text"
                    name="name"
                    class="form-control"
-                   placeholder="Full Name">
+                   placeholder="Full Name"
+                   required>
 
             <input type="email"
                    name="email"
                    class="form-control"
-                   placeholder="Email">
+                   placeholder="Email"
+                   required>
 
             <input type="password"
                    name="password"
                    class="form-control"
-                   placeholder="Password">
+                   placeholder="Password"
+                   minlength="8"
+                   required>
 
             <button type="submit" class="btn-register">
                 Create Account
@@ -85,13 +93,13 @@
             <a th:href="@{/login}">
                 Login
             </a>
-            <a href="/oauth2/github/register">
+            <a th:href="@{/oauth2/authorization/github}">
                 Continue with GitHub
             </a>
 
 
             <div class="google-login">
-                <a href="/oauth2/google/register">
+                <a th:href="@{/oauth2/authorization/google}">
                     Continue with Google
                 </a>
             </div>

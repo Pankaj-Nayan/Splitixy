@@ -25,7 +25,7 @@
 
     <div class="header-right">
 
-        <a href="#">
+        <a th:href="@{/history}">
 
             <img th:src="@{/images/mew.png}"
                  class="header-icon">
@@ -34,7 +34,7 @@
 
         </a>
 
-        <a href="#">
+        <a th:href="@{/profile}">
 
             <img th:src="@{/images/lucario.png}"
                  class="header-icon">
@@ -62,7 +62,10 @@
 
                 <div class="welcome-text">
 
-                    <h2>Welcome back, Pankaj 👋</h2>
+                    <h2>Welcome back, <span th:text="${session.loggedInUser.fullName}">User</span> 👋</h2>
+                    <p th:if="${param.error}" role="alert">
+                        That GitHub account is already linked to a different Splitixy account.
+                    </p>
 
                     <p>Let's settle some expenses today.</p>
 
@@ -80,91 +83,45 @@
         </div>
 
 
-        <!-- OWE YOU -->
-
         <div class="balance-card">
-
-            <h3>People Who Owe You</h3>
-
-            <div class="balance-content">
-
-                <div class="balance-list">
-
-                    <div class="person-row">
-
-                        <span>Rahul</span>
-
-                        <span>₹500</span>
-
-                    </div>
-
-                    <div class="person-row">
-
-                        <span>Aman</span>
-
-                        <span>₹250</span>
-
-                    </div>
-
-                    <div class="person-row">
-
-                        <span>Priya</span>
-
-                        <span>₹180</span>
-
-                    </div>
-
-                </div>
-
-                <div class="balance-image">
-
-                    <img th:src="@{/images/necrozma.png}"
-                         class="balance-pokemon">
-
-                </div>
-
+            <h3>Outstanding settlements</h3>
+            <p th:if="${accountingIncomplete}" role="alert">
+                Some groups have incomplete legacy expenses; those balances are not shown.
+            </p>
+            <p th:if="${debts.isEmpty() and !accountingIncomplete}">No outstanding settlements.</p>
+            <div th:each="debt : ${debts}" class="person-row">
+                <span>
+                    <strong th:text="${debt.debtor}">Member</strong> owes
+                    <strong th:text="${debt.creditor}">Member</strong>
+                    ₹<span th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">0.00</span>
+                    in <span th:text="${debt.groupName}">Group</span>
+                </span>
             </div>
-
         </div>
 
-
-        <!-- YOU OWE -->
-
         <div class="balance-card">
-
-            <h3>People You Owe</h3>
-
-            <div class="balance-content">
-
-                <div class="balance-list">
-
-                    <div class="person-row">
-
-                        <span>Neha</span>
-
-                        <span>₹300</span>
-
-                    </div>
-
-                    <div class="person-row">
-
-                        <span>Rohan</span>
-
-                        <span>₹150</span>
-
-                    </div>
-
-                </div>
-
-                <div class="balance-image">
-
-                    <img th:src="@{/images/snorlax.png}"
-                         class="balance-pokemon">
-
-                </div>
-
+            <h3>Your financial summary</h3>
+            <div class="person-row">
+                <span>Total paid</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(summary.totalPaid, 1, 2)}">0.00</span></span>
             </div>
-
+            <div class="person-row">
+                <span>Your shares</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(summary.personalShares, 1, 2)}">0.00</span></span>
+            </div>
+            <div class="person-row">
+                <span>You owe</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(summary.totalOwed, 1, 2)}">0.00</span></span>
+            </div>
+            <div class="person-row">
+                <span>Receivable</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(summary.totalReceivable, 1, 2)}">0.00</span></span>
+            </div>
+            <div class="person-row">
+                <span>Net (paid − shares)</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(summary.netBalance, 1, 2)}">0.00</span></span>
+            </div>
+            <p th:unless="${summary.complete}" role="alert">Some incomplete expense records are excluded.</p>
         </div>
 
     </section>
@@ -190,7 +147,7 @@
 
 
             <!-- Add Expense -->
-            <a th:href="@{/add-expense}" class="action-btn">
+            <a th:href="@{/my-groups}" class="action-btn">
 
                 <img th:src="@{/images/scizor.png}"
                      class="button-pokemon">
@@ -211,47 +168,23 @@
             </a>
 
 
-            <!-- Logout -->
-            <a th:href="@{/logout}" class="action-btn">
 
+            <!-- Logout -->
+            <form th:action="@{/logout}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <button type="submit" class="action-btn">
                 <img th:src="@{/images/oshawott.png}"
                      class="button-pokemon">
 
                 <span>Logout</span>
-
-            </a>
+                </button>
+            </form>
 
         </div>
 
     </aside>
 
 </main>
-
-
-<footer class="dashboard-footer">
-
-    <div class="summary-container">
-
-        <div class="summary-card">
-
-            <h3>Total You Receive</h3>
-
-            <h2>₹930</h2>
-
-        </div>
-
-        <div class="summary-card">
-
-            <h3>Total You Owe</h3>
-
-            <h2>₹450</h2>
-
-        </div>
-
-    </div>
-
-</footer>
-
 </body>
 
 </html>

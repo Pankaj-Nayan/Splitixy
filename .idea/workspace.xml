@@ -5,18 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cb27a00c-dd0c-4f5a-ba7b-04b52f237f0a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/BalanceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/DashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/DashboardController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/ExpenseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/ExpenseController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/ExpenseGroupController.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/ExpenseGroupController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/config/SecConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/controller/config/SecConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/Expense.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/Expense.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/ExpenseSplit.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/ExpenseSplit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/GroupMemberId.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/GroupMemberId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseSplitRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/ExpenseSplitRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/GroupMemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/GroupMemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/BalanceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/BalanceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/ExpenseGroupService.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/ExpenseGroupService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/ExpenseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/ExpenseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/GroupMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/GroupMemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/java/com/splitixy/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/add-expense.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/add-expense.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/create-group.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/create-group.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/group-details.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/group-details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/splitixy-web/src/main/resources/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/T/T/Splitixy" value="3LQJpTZDS1SyJBN9MXYm4lpE7a0" />
+    </persistenceIdMap>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -45,21 +70,50 @@
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="3HRJBsE6U3A97XOTboIIMBTzP14" />
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="ensembleEnabled" value="false" />
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+    <option name="version" value="1" />
+  </component>
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Splitixy Web.executor&quot;: &quot;Run&quot;,
-    &quot;Application.SplitixyWebApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Splitixy Web.executor": "Run",
+    "Application.SplitixyWebApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Splitixy Web" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.splitixy.SplitixyWebApplication" />
@@ -68,6 +122,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10968.63" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10968.63" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -78,5 +140,12 @@
       <updated>1785824817612</updated>
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

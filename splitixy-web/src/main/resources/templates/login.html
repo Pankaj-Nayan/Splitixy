@@ -26,7 +26,17 @@
     <h1 class="title">Splitixy</h1>
     <p class="subtitle">" Enter the Nightmare "</p>
 
+    <div th:if="${param.error != null and param.error[0] == 'account-link-required'}"
+         class="alert alert-danger" role="alert">
+        This email already has a Splitixy account. Sign in with email and password, then link GitHub from the dashboard.
+    </div>
+    <div th:if="${param.error != null and param.error[0] != 'account-link-required'}"
+         class="alert alert-danger" role="alert">
+        Email or password is invalid, or the OAuth account could not be verified.
+    </div>
+
     <form th:action="@{/login}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
         <input
                 type="email"
@@ -54,13 +64,13 @@
     </p>
 
     <div class="google-login">
-        <a href="/oauth2/google/login">
+        <a th:href="@{/oauth2/authorization/google}">
             Continue with Google
         </a>
     </div>
 
     <div class="github-login">
-        <a href="/oauth2/github/login">Continue with GitHub</a>
+        <a th:href="@{/oauth2/authorization/github}">Continue with GitHub</a>
     </div>
 
 </div>

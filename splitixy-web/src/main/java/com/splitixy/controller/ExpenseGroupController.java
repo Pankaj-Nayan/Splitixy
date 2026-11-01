@@ -1,6 +1,5 @@
 package com.splitixy.controller;
 
-import com.splitixy.entity.Expense;
 import com.splitixy.entity.ExpenseGroup;
 import com.splitixy.entity.GroupMember;
 import com.splitixy.entity.GroupMemberId;
@@ -17,11 +16,14 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Controller
 public class ExpenseGroupController {
@@ -44,7 +46,10 @@ public class ExpenseGroupController {
 
     // Create Group Page
     @GetMapping("/create-group")
-    public String createGroupPage() {
+    public String createGroupPage(HttpSession session) {
+        if (getSessionUser(session) == null) {
+            return "redirect:/login";
+        }
         return "create-group";
     }
 
@@ -53,40 +58,19 @@ public class ExpenseGroupController {
     @PostMapping("/create-group")
     public String createGroup(@RequestParam String groupName,
                               HttpSession session) {
-
-        User user =
-                (User) session.getAttribute("loggedInUser");
+        User user = getSessionUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
+        if (groupName == null || groupName.isBlank()) {
+            return "redirect:/create-group?error=invalid";
+        }
 
         ExpenseGroup expenseGroup =
                 new ExpenseGroup();
 
-        expenseGroup.setGroupName(groupName);
-
-        expenseGroup.setCreatedBy(
-                user.getId()
-        );
-
-        expenseGroupService.createGroup(
-                expenseGroup
-        );
-
-
-        // Add creator as first member
-        GroupMember groupMember =
-                new GroupMember();
-
-        GroupMemberId groupMemberId =
-                new GroupMemberId(
-                        expenseGroup.getGroupId(),
-                        user.getId()
-                );
-
-        groupMember.setId(groupMemberId);
-
-        groupMemberService.addMember(
-                groupMember
-        );
-
+        expenseGroup.setGroupName(groupName.trim());
+        expenseGroupService.createGroup(expenseGroup, user.getId());
 
         return "redirect:/dashboard";
     }
@@ -96,11 +80,10 @@ public class ExpenseGroupController {
     @GetMapping("/my-groups")
     public String myGroups(HttpSession session,
                            Model model) {
-
-        User user =
-                (User) session.getAttribute(
-                        "loggedInUser"
-                );
+        User user = getSessionUser(session);
+        if (user == null) {
+            return "redirect:/login";
+        }
 
         List<ExpenseGroup> groups =
                 expenseGroupService.getMyGroups(
@@ -120,8 +103,18 @@ public class ExpenseGroupController {
     @GetMapping("/group/{groupId}")
     public String groupDetails(
             @PathVariable Integer groupId,
+            HttpSession session,
             Model model) {
 
+        User currentUser = getSessionUser(session);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        ExpenseGroup group = expenseGroupService.getGroup(groupId);
+        if (group == null
+                || !groupMemberService.isMember(groupId, currentUser.getId())) {
+            return "redirect:/my-groups";
+        }
 
         // -------------------------
         // GROUP MEMBERS
@@ -155,32 +148,43 @@ public class ExpenseGroupController {
         // ALL USERS
         // -------------------------
 
-        List<User> allUsers =
-                userService.getAllUsers();
+        Set<Integer> existingMemberIds = new HashSet<>();
+        for (GroupMember member : members) {
+            existingMemberIds.add(member.getId().getUserId());
+        }
+        List<User> allUsers = userService.getAllUsers().stream()
+                .filter(user -> !existingMemberIds.contains(user.getId()))
+                .toList();
 
 
         // -------------------------
         // EXPENSES
         // -------------------------
 
-        List<Expense> expenses =
-                expenseService.getExpensesByGroup(
-                        groupId
-                );
+        List<com.splitixy.service.ExpenseHistoryItem> history =
+                expenseService.getGroupHistory(groupId);
 
 
         // -------------------------
         // BALANCES
         // -------------------------
 
-        Map<Integer, Double> balances =
-                balanceService.calculateBalances(
-                        groupId
-                );
-        List<BalanceService.Debt> debts =
-                balanceService.calculateDebts(groupId);
+        Map<Integer, java.math.BigDecimal> balances = Map.of();
+        List<BalanceService.Debt> debts = List.of();
+        String accountingError = null;
+        try {
+            balances = balanceService.calculateBalances(groupId);
+            debts = balanceService.calculateDebts(groupId);
+        } catch (BalanceService.IncompleteExpenseDataException exception) {
+            accountingError = exception.getMessage();
+        }
 
         model.addAttribute("debts", debts);
+        model.addAttribute("accountingError", accountingError);
+        model.addAttribute("accountingComplete", accountingError == null);
+        model.addAttribute("canManageMembers",
+                currentUser.getId().equals(group.getCreatedBy()));
+        model.addAttribute("group", group);
 
 
         // -------------------------
@@ -202,10 +206,7 @@ public class ExpenseGroupController {
                 groupId
         );
 
-        model.addAttribute(
-                "expenses",
-                expenses
-        );
+        model.addAttribute("history", history);
 
         model.addAttribute(
                 "balances",
@@ -221,8 +222,19 @@ public class ExpenseGroupController {
     @PostMapping("/group/{groupId}/add-member")
     public String addMember(
             @PathVariable Integer groupId,
-            @RequestParam Integer userId) {
-
+            @RequestParam Integer userId,
+            HttpSession session) {
+        User currentUser = getSessionUser(session);
+        if (currentUser == null) {
+            return "redirect:/login";
+        }
+        com.splitixy.entity.ExpenseGroup group = expenseGroupService.getGroup(groupId);
+        if (group == null
+                || !groupMemberService.isMember(groupId, currentUser.getId())
+                || !currentUser.getId().equals(group.getCreatedBy())
+                || userService.getUserById(userId) == null) {
+            return "redirect:/my-groups";
+        }
 
         GroupMember groupMember =
                 new GroupMember();
@@ -235,12 +247,24 @@ public class ExpenseGroupController {
 
         groupMember.setId(id);
 
-        groupMemberService.addMember(
-                groupMember
-        );
-
+        try {
+            groupMemberService.addMember(groupMember);
+        } catch (DataIntegrityViolationException exception) {
+            if (!groupMemberService.isMember(groupId, userId)) {
+                throw exception;
+            }
+        }
 
         return "redirect:/group/" + groupId;
+
+    }
+
+    private User getSessionUser(HttpSession session) {
+        Object currentUser = session.getAttribute("loggedInUser");
+        if (currentUser instanceof User user && user.getId() != null) {
+            return user;
+        }
+        return null;
     }
 
 }

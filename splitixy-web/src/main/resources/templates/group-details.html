@@ -25,7 +25,9 @@
         <!-- GROUP MEMBERS -->
         <!-- ========================= -->
 
-        <h1>Group Members</h1>
+        <h1 th:text="${group.groupName}">Group</h1>
+
+        <h2>Group Members</h2>
 
         <p>Members in this group</p>
 
@@ -43,7 +45,7 @@
 
                 <p>
                     👤
-                    <span th:text="${user.fullName}">
+                    <span th:text="${user.fullName != null and !#strings.isEmpty(user.fullName) ? user.fullName : user.email}">
                         User
                     </span>
                 </p>
@@ -63,37 +65,40 @@
         <h2>💰 Expenses</h2>
 
 
-        <div th:if="${expenses.isEmpty()}">
+        <div th:if="${history.isEmpty()}">
 
             <p>No expenses yet.</p>
 
         </div>
 
 
-        <div th:unless="${expenses.isEmpty()}">
+        <div th:each="expense : ${history}" class="expense-history-entry">
 
-            <div th:each="expense : ${expenses}">
-
-                <p>
-
-                    <strong
-                            th:text="${expense.description}">
-                        Dinner
-                    </strong>
-
-                    -
-
-                    ₹<span
-                        th:text="${expense.amount}">
-                        0
-                    </span>
-
-                </p>
-
+            <p>
+                <strong th:text="${expense.description}">Expense</strong>
+                — ₹<span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}">0.00</span>
+            </p>
+            <p>
+                Paid by <strong th:text="${expense.payerName}">Member</strong>
+                <span th:if="${expense.creatorName != null}">
+                    · Recorded by <span th:text="${expense.creatorName}">Member</span>
+                </span>
+                · <span th:text="${expense.splitType}">Split</span>
+                · <time th:if="${expense.expenseDate != null}"
+                        th:datetime="${expense.expenseDate}"
+                        th:text="${#temporals.format(expense.expenseDate, 'dd MMM yyyy HH:mm')}">Date</time>
+            </p>
+            <ul th:if="${!expense.shares.isEmpty()}">
+                <li th:each="share : ${expense.shares}">
+                    <span th:text="${share.memberName}">Member</span>:
+                    ₹<span th:text="${#numbers.formatDecimal(share.amount, 1, 2)}">0.00</span>
+                </li>
+            </ul>
+            <p th:if="${expense.shares.isEmpty()}" class="text-warning">
+                Legacy expense has no recorded shares; balance is incomplete.
+            </p>
+            <hr>
             </div>
-
-        </div>
-
 
         <br>
 
@@ -121,37 +126,33 @@
 
         <h2>⚖️ Balances</h2>
 
-        <div th:if="${debts.isEmpty()}">
+        <div th:if="${accountingError != null}" class="alert alert-danger" role="alert">
+            Financial records need review:
+            <span th:text="${accountingError}">Incomplete financial record</span>
+        </div>
 
-            <p>Everyone is settled. 🎉</p>
+        <div th:if="${accountingComplete and debts.isEmpty()}">
+
+            <p>Everyone is settled 🎉</p>
 
         </div>
 
-        <div th:unless="${debts.isEmpty()}">
+        <div th:if="${accountingComplete and !debts.isEmpty()}">
 
             <div th:each="debt : ${debts}">
 
                 <p>
-
                     <strong th:text="${debt.debtor}">
                         Person
                     </strong>
-
                     owes
-
                     <strong th:text="${debt.creditor}">
                         Person
                     </strong>
-
-                    ₹<span
-                        th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">
-                0.00
-            </span>
-
+                    ₹<span th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">0.00</span>
+                    in <span th:text="${debt.groupName}">Group</span>
                 </p>
-
             </div>
-
         </div>
 
         <br>
@@ -161,13 +162,14 @@
         <!-- ADD MEMBER -->
         <!-- ========================= -->
 
-        <h2>Add Member</h2>
+        <h2 th:if="${canManageMembers}">Add Member</h2>
 
 
-        <form
+        <form th:if="${canManageMembers}"
                 th:action="@{'/group/' + ${groupId} + '/add-member'}"
                 method="post">
 
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
             <select name="userId"
                     required>
@@ -182,7 +184,7 @@
                 <option
                         th:each="u : ${allUsers}"
                         th:value="${u.id}"
-                        th:text="${u.fullName}">
+                        th:text="${u.fullName != null and !#strings.isEmpty(u.fullName) ? u.fullName : u.email}">
 
                 </option>
 

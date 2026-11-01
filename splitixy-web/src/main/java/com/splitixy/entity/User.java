@@ -3,7 +3,11 @@ package com.splitixy.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = @UniqueConstraint(
+                name = "uk_users_email",
+                columnNames = "email"))
 public class User {
 
     @Id
@@ -13,6 +17,7 @@ public class User {
     @Column(name = "name")
 
     private String fullName;
+    @Column(name = "email")
     private String email;
     private String password;
 

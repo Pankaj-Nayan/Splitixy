@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
 
-    List<Expense> findByGroupId(Integer groupId);
+    List<Expense> findByGroupIdOrderByExpenseDateDescExpenseIdDesc(Integer groupId);
+    List<Expense> findByGroupIdInOrderByExpenseDateDescExpenseIdDesc(
+            List<Integer> groupIds);
 
 }

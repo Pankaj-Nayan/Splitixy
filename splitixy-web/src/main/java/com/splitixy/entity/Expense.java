@@ -2,6 +2,8 @@ package com.splitixy.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.math.BigDecimal;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "expenses")
@@ -15,16 +17,22 @@ public class Expense {
     @Column(name = "group_id", nullable = false)
     private Integer groupId;
 
-    @Column(name = "paid_by", nullable = false)
+    @Column(name = "paid_by")
     private Integer paidBy;
 
-    @Column(nullable = false)
-    private Double amount;
+    @Column(nullable = false, precision = 19, scale = 2)
+    private BigDecimal amount;
 
     private String description;
 
     @Column(name = "expense_date")
     private LocalDateTime expenseDate;
+
+    @Column(name = "created_by")
+    private Integer createdBy;
+
+    @Column(name = "split_type", length = 16)
+    private String splitType;
 
     public Expense() {
     }
@@ -53,11 +61,11 @@ public class Expense {
         this.paidBy = paidBy;
     }
 
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
@@ -75,5 +83,28 @@ public class Expense {
 
     public void setExpenseDate(LocalDateTime expenseDate) {
         this.expenseDate = expenseDate;
+    }
+
+    public Integer getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(Integer createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getSplitType() {
+        return splitType;
+    }
+
+    public void setSplitType(String splitType) {
+        this.splitType = splitType;
+    }
+
+    @PrePersist
+    void setDefaultExpenseDate() {
+        if (expenseDate == null) {
+            expenseDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        }
     }
 }

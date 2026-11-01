@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Splitixy</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="create-group-container">
+    <section class="create-group-card">
+        <h1>Your Profile</h1>
+        <p th:if="${param.updated}" role="status">Profile updated.</p>
+        <p th:if="${param.error}" role="alert">Enter a name of at most 120 characters.</p>
+        <form th:action="@{/profile/update}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label for="fullName">Full name</label>
+            <input id="fullName" name="fullName" type="text" maxlength="120"
+                   th:value="${user.fullName}" required>
+            <p>Email: <span th:text="${user.email}">Email</span></p>
+            <button type="submit">Save name</button>
+        </form>
+
+        <h2>Personal totals</h2>
+        <p>Total paid: ₹<span th:text="${#numbers.formatDecimal(summary.totalPaid, 1, 2)}">0.00</span></p>
+        <p>Personal shares: ₹<span th:text="${#numbers.formatDecimal(summary.personalShares, 1, 2)}">0.00</span></p>
+        <p>Owed to others: ₹<span th:text="${#numbers.formatDecimal(summary.totalOwed, 1, 2)}">0.00</span></p>
+        <p>Receivable: ₹<span th:text="${#numbers.formatDecimal(summary.totalReceivable, 1, 2)}">0.00</span></p>
+        <p>Net (paid minus own shares): ₹<span th:text="${#numbers.formatDecimal(summary.netBalance, 1, 2)}">0.00</span></p>
+        <p th:unless="${summary.complete}" role="alert">
+            Some legacy expense records are incomplete; totals may exclude them.
+        </p>
+
+        <h2>Groups</h2>
+        <p th:if="${groups.isEmpty()}">You are not in any groups yet.</p>
+        <ul th:unless="${groups.isEmpty()}">
+            <li th:each="group : ${groups}">
+                <a th:href="@{'/group/' + ${group.groupId}}" th:text="${group.groupName}">Group</a>
+            </li>
+        </ul>
+        <a th:href="@{/history}">Personal expense history</a>
+        <br><a th:href="@{/dashboard}">Back to dashboard</a>
+    </section>
+</main>
+</body>
+</html>
