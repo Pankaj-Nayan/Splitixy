@@ -1,54 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Expense | Splitixy</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
-
-    <link rel="stylesheet"
-          th:href="@{/css/style.css}">
-
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+<body class="add-expense-page">
+<div class="app-shell">
+    <header class="app-header">
+        <nav class="app-nav" aria-label="Main navigation">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/my-groups}">My Groups</a>
+        </nav>
+    </header>
 
-<body>
+    <main class="page-content">
+        <header class="page-heading">
+            <h1>Add an expense</h1>
+            <p>Record what was paid and choose how the group should split it.</p>
+        </header>
 
-<div class="container mt-5">
-
-    <div class="card p-4 mx-auto"
-         style="max-width: 600px;">
-
-        <h2 class="mb-4">
-            💸 Add Expense
-        </h2>
-
-
-        <!-- Error -->
-
-        <div th:if="${error}"
-             class="alert alert-danger">
-
-            <span th:text="${error}">
-                Error
-            </span>
-
+        <div th:if="${error}" class="status-message" role="alert">
+            <span th:text="${error}">Error</span>
         </div>
 
-        <form th:action="@{'/group/' + ${groupId} + '/expense/add'}"
-              method="post">
-
+        <form th:action="@{'/group/' + ${groupId} + '/expense/add'}" method="post" class="app-form">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 
-            <div class="mb-3">
-                <label for="paidBy" class="form-label">Paid by</label>
-                <select id="paidBy" name="paidBy" class="form-select" required>
+            <div class="form-field">
+                <label for="paidBy">Paid by</label>
+                <select id="paidBy" name="paidBy" required>
                     <option th:each="user : ${users}"
                             th:value="${user.id}"
                             th:text="${user.fullName != null and !#strings.isEmpty(user.fullName) ? user.fullName : user.email}"
@@ -58,242 +44,101 @@
                 </select>
             </div>
 
-            <!-- Description -->
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Description
-                </label>
-
-                <input type="text"
-                       name="description"
-                       class="form-control"
-                       placeholder="e.g. Dinner"
-                       th:value="${descriptionValue}"
-                       required>
-
+            <div class="form-field">
+                <label for="description">Description</label>
+                <input id="description" type="text" name="description"
+                       placeholder="e.g. Dinner" th:value="${descriptionValue}" required>
             </div>
 
-
-            <!-- Amount -->
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Total Amount
-                </label>
-
-                <input type="number"
-                       id="totalAmount"
-                       name="amount"
-                       class="form-control"
-                       th:value="${amountValue}"
-                       step="0.01"
-                       min="0.01"
-                       placeholder="e.g. 1000"
-                       required>
-
+            <div class="form-field">
+                <label for="totalAmount">Total amount</label>
+                <input id="totalAmount" type="number" name="amount"
+                       th:value="${amountValue}" step="0.01" min="0.01"
+                       placeholder="e.g. 1000" required>
             </div>
 
-
-            <!-- Split Type -->
-
-            <div class="mb-3">
-
-                <label class="form-label">
-                    Split Type
-                </label>
-
-                <select name="splitType"
-                        id="splitType"
-                        class="form-select"
-                        onchange="changeSplitType()"
-                        required>
-
+            <div class="form-field">
+                <label for="splitType">How should this be split?</label>
+                <select name="splitType" id="splitType" onchange="changeSplitType()" required>
                     <option value="EQUAL" th:selected="${splitType == null or splitType == 'EQUAL'}">
-                        Equal Split
+                        Equal split
                     </option>
-
                     <option value="CUSTOM" th:selected="${splitType == 'CUSTOM'}">
-                        Custom Split
+                        Custom split
                     </option>
-
                 </select>
-
             </div>
-
-
-            <!-- Equal Split -->
 
             <div id="equalSection">
-
-                <div class="alert alert-info">
-
-                    The total amount will be divided
-                    equally among all group members.
-
-                </div>
-
+                <p class="split-help">
+                    The total amount will be divided equally among all group members.
+                </p>
             </div>
 
-
-            <!-- Custom Split -->
-
-            <div id="customSection"
-                 style="display: none;">
-
-                <h5>
-                    Enter each person's share
-                </h5>
-
-                <div th:each="user : ${users}"
-                     class="mb-3">
-
-                    <label class="form-label">
-
-                        <span th:text="${user.fullName}">
-                            User
-                        </span>
-
+            <div id="customSection" style="display: none;">
+                <h2 class="section-heading">Enter each person’s share</h2>
+                <div th:each="user : ${users}" class="form-field">
+                    <label th:for="'amount_' + ${user.id}">
+                        <span th:text="${user.fullName}">User</span>
                     </label>
-
                     <input type="number"
-                           class="form-control custom-amount"
+                           class="custom-amount"
+                           th:id="'amount_' + ${user.id}"
                            th:name="'amount_' + ${user.id}"
                            th:value="${customShares != null ? customShares[#strings.toString(user.id)] : '0.00'}"
-                           step="0.01"
-                           min="0"
-                           value="0">
-
+                           step="0.01" min="0" value="0">
                 </div>
 
-
-                <div class="alert alert-secondary">
-
-                    Total entered:
-
-                    ₹<span id="customTotal">
-                        0.00
-                    </span>
-
-                    <br>
-
-                    Required:
-
-                    ₹<span id="requiredTotal">
-                        0.00
-                    </span>
-
+                <div class="split-total" aria-live="polite">
+                    <span>Total entered: ₹<span id="customTotal">0.00</span></span>
+                    <span>Required: ₹<span id="requiredTotal">0.00</span></span>
                 </div>
-
             </div>
 
-
-            <!-- Buttons -->
-
-            <button type="submit"
-                    class="btn btn-primary">
-
-                Add Expense
-
-            </button>
-
-
-            <a th:href="@{'/group/' + ${groupId}}"
-               class="btn btn-secondary">
-
-                Cancel
-
-            </a>
-
+            <div class="form-actions">
+                <button type="submit" class="app-button">Add expense</button>
+                <a th:href="@{'/group/' + ${groupId}}" class="app-button-secondary">Cancel</a>
+            </div>
         </form>
-
-    </div>
-
+    </main>
 </div>
 
-
 <script>
-
     function changeSplitType() {
-
-        const splitType =
-            document.getElementById("splitType").value;
-
-        const equalSection =
-            document.getElementById("equalSection");
-
-        const customSection =
-            document.getElementById("customSection");
-
+        const splitType = document.getElementById("splitType").value;
+        const equalSection = document.getElementById("equalSection");
+        const customSection = document.getElementById("customSection");
 
         if (splitType === "CUSTOM") {
-
             equalSection.style.display = "none";
-
             customSection.style.display = "block";
-
         } else {
-
             equalSection.style.display = "block";
-
             customSection.style.display = "none";
-
         }
     }
 
-
-    const amountInput =
-        document.getElementById("totalAmount");
-
-    const customInputs =
-        document.querySelectorAll(".custom-amount");
-
+    const amountInput = document.getElementById("totalAmount");
+    const customInputs = document.querySelectorAll(".custom-amount");
 
     function updateCustomTotal() {
-
         let total = 0;
-
         customInputs.forEach(function(input) {
-
-            total +=
-                parseFloat(input.value) || 0;
-
+            total += parseFloat(input.value) || 0;
         });
 
-
-        document.getElementById("customTotal")
-            .textContent = total.toFixed(2);
-
-
-        document.getElementById("requiredTotal")
-            .textContent =
-                (parseFloat(amountInput.value) || 0)
-                .toFixed(2);
+        document.getElementById("customTotal").textContent = total.toFixed(2);
+        document.getElementById("requiredTotal").textContent =
+            (parseFloat(amountInput.value) || 0).toFixed(2);
     }
 
-
-    amountInput.addEventListener(
-        "input",
-        updateCustomTotal
-    );
-
-
+    amountInput.addEventListener("input", updateCustomTotal);
     customInputs.forEach(function(input) {
-
-        input.addEventListener(
-            "input",
-            updateCustomTotal
-        );
-
+        input.addEventListener("input", updateCustomTotal);
     });
 
     changeSplitType();
     updateCustomTotal();
-
 </script>
-
 </body>
-
 </html>

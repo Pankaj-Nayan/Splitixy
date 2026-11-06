@@ -2,26 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Splitixy</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Poppins:wght@400;600;700&display=swap"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splitixy | Shared expenses, made simple</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
           rel="stylesheet">
-    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
-<nav>
-    <div class="logo">Splitixy</div>
-    <div class="nav-links"><a th:href="@{/login}">Login</a><a class="register" th:href="@{/register}">Register</a></div>
-</nav>
-<section class="hero">
-    <div class="left"><img th:src="@{/images/lugia.png}" class="lugia"></div>
-    <div class="right"><h1>Expenses,<br> Simplified..</h1>
-        <p>Never argue over bills again.</p>
-        <div class="buttons"><a th:href="@{/register}" class="btn-primary">Get Started</a><a th:href="@{/login}"
-                                                                                             class="btn-secondary">Login</a>
-        </div>
-    </div>
-</section>
+<body class="landing-page">
+<div class="app-shell">
+    <header class="app-header">
+        <a class="app-brand" th:href="@{/}" aria-label="Splitixy home">
+            <img class="app-brand-mark" th:src="@{/images/splitixy-mark.svg}" alt="">
+            <span>Splitixy</span>
+        </a>
+        <nav class="app-nav" aria-label="Main navigation">
+            <a class="app-nav-secondary" th:href="@{/}" aria-current="page">Home</a>
+            <a class="app-nav-primary" th:href="@{/login}">Login</a>
+        </nav>
+    </header>
+
+    <main class="page-content page-content-wide">
+        <section class="landing-copy" aria-labelledby="landing-title">
+            <header class="page-heading">
+                <h1 id="landing-title">Shared expenses, made simple.</h1>
+                <p>Keep group expenses clear. See who paid, what each person owes, and settle up without the guesswork.</p>
+            </header>
+            <div class="quick-actions">
+                <a class="app-button" th:href="@{/register}">Get started</a>
+                <a class="app-button-secondary" th:href="@{/login}">Log in</a>
+            </div>
+        </section>
+    </main>
+</div>
 </body>
 </html>

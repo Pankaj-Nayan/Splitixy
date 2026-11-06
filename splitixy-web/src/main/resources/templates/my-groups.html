@@ -1,65 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>My Groups - Splitixy</title>
-
-    <link rel="stylesheet"
-          th:href="@{/css/style.css}">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Groups | Splitixy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+<body class="groups-page">
+<div class="app-shell">
+    <header class="app-header">
+        <nav class="app-nav" aria-label="Main navigation">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a class="app-nav-primary" th:href="@{/create-group}">Create Group</a>
+        </nav>
+    </header>
 
-<body>
-
-<div class="create-group-container">
-
-    <div class="create-group-card">
-
-        <h1>My Groups</h1>
-
-        <p>Your expense groups</p>
-
-        <div th:if="${groups.isEmpty()}">
-
-            <p>You haven't created any groups yet.</p>
-
-            <a th:href="@{/create-group}">
-                Create Your First Group
-            </a>
-
-        </div>
-
-        <div th:unless="${groups.isEmpty()}">
-
-            <div th:each="group : ${groups}">
-
-                <h3>
-                    <a th:href="@{'/group/' + ${group.groupId}}"
-                       th:text="${group.groupName}">
-                        Group Name
-                    </a>
-                </h3>
-
+    <main class="page-content">
+        <header class="dashboard-welcome groups-heading">
+            <div class="page-heading">
+                <h1>My groups</h1>
+                <p>Your groups and their shared expenses.</p>
             </div>
+            <a class="app-button" th:href="@{/create-group}">Create group</a>
+        </header>
 
-        </div>
+        <section th:if="${groups.isEmpty()}" aria-label="No groups">
+            <p class="status-message">You haven’t created any groups yet. Create one to start sharing expenses.</p>
+            <a class="app-button" th:href="@{/create-group}">Create your first group</a>
+        </section>
 
-        <br>
+        <ul th:unless="${groups.isEmpty()}" class="data-list" aria-label="Your groups">
+            <li th:each="group : ${groups}" class="data-row">
+                <div class="data-row-main">
+                    <a class="data-row-title" th:href="@{'/group/' + ${group.groupId}}"
+                       th:text="${group.groupName}">Group Name</a>
+                    <span class="data-row-meta">Open this group to view members, expenses, and balances.</span>
+                </div>
+                <a class="app-button-secondary" th:href="@{'/group/' + ${group.groupId}}">Open group</a>
+            </li>
+        </ul>
 
-        <a th:href="@{/dashboard}">
-            ← Back to Dashboard
-        </a>
-
-    </div>
-
+        <a class="back-link" th:href="@{/dashboard}">← Back to dashboard</a>
+    </main>
 </div>
-
 </body>
-
 </html>

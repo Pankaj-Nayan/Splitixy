@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" preserveAspectRatio="none">
+    <defs>
+        <linearGradient id="facet" x1="0" y1="0" x2="1" y2="1">
+            <stop stop-color="#F0E6FF" stop-opacity=".88"/>
+            <stop offset="1" stop-color="#E5D0FF" stop-opacity=".12"/>
+        </linearGradient>
+        <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="flare" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="8"/>
+        </filter>
+    </defs>
+    <g fill="url(#facet)" stroke="#D6B7FF" stroke-opacity=".48" stroke-width="1.2">
+        <path d="M0 0h204l-46 72 26 54-91 46L0 225z"/>
+        <path d="M1440 0h-197l42 68-31 63 94 43 92 48z"/>
+        <path d="M0 900V685l67-24 64 49 67-19 43 91-77 118z"/>
+        <path d="M1440 900V687l-68-25-63 49-68-21-40 92 76 118z"/>
+    </g>
+    <g fill="none" stroke="#A020F0" stroke-linecap="square" stroke-linejoin="miter"
+       filter="url(#glow)" opacity=".78">
+        <path stroke-width="2.4" d="M0 225 72 190 93 172 123 161 107 137 158 126 142 102 204 0"/>
+        <path stroke-width="1.5" d="M93 172 76 145 38 132 61 96 24 72 0 49M123 161 151 184 189 174 214 197 251 177"/>
+        <path stroke-width="2.4" d="M1440 222 1365 185 1346 167 1315 156 1334 132 1283 121 1300 97 1243 0"/>
+        <path stroke-width="1.5" d="M1346 167 1363 141 1401 128 1378 92 1415 68 1440 45M1315 156 1286 179 1248 170 1224 193 1185 174"/>
+        <path stroke-width="2.4" d="M0 685 67 661 87 675 112 710 131 710 150 752 177 779 198 782 241 900"/>
+        <path stroke-width="1.5" d="M87 675 75 643 40 631 57 601 18 580 0 557M131 710 108 742 80 754 63 791 32 812 14 850"/>
+        <path stroke-width="2.4" d="M1440 687 1373 662 1352 677 1328 711 1308 711 1291 752 1264 780 1243 783 1200 900"/>
+        <path stroke-width="1.5" d="M1352 677 1365 644 1400 632 1383 602 1421 581 1440 558M1308 711 1331 742 1359 755 1376 791 1407 813 1426 850"/>
+    </g>
+    <g fill="none" stroke="#7C22E8" stroke-linecap="square" stroke-linejoin="miter">
+        <path stroke-width="1.2" d="M0 225 72 190 93 172 123 161 107 137 158 126 142 102 204 0M93 172 76 145 38 132 61 96 24 72"/>
+        <path stroke-width="1.2" d="M1440 222 1365 185 1346 167 1315 156 1334 132 1283 121 1300 97 1243 0M1346 167 1363 141 1401 128 1378 92 1415 68"/>
+        <path stroke-width="1.2" d="M0 685 67 661 87 675 112 710 131 710 150 752 177 779 198 782 241 900M87 675 75 643 40 631 57 601 18 580"/>
+        <path stroke-width="1.2" d="M1440 687 1373 662 1352 677 1328 711 1308 711 1291 752 1264 780 1243 783 1200 900M1352 677 1365 644 1400 632 1383 602 1421 581"/>
+    </g>
+    <g fill="#A020F0" filter="url(#flare)" opacity=".34">
+        <path d="m101 147 10-11 5 15 20 9-17 5-12 21-1-20-18-9z"/>
+        <path d="m1324 141 10-11 5 15 20 9-17 5-12 21-1-20-18-9z"/>
+        <path d="m121 697 10-11 5 15 20 9-17 5-12 21-1-20-18-9z"/>
+        <path d="m1303 698 10-11 5 15 20 9-17 5-12 21-1-20-18-9z"/>
+    </g>
+</svg>

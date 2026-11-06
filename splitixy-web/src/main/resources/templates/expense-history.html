@@ -4,19 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense History | Splitixy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
-<body>
-<main class="create-group-container">
-    <section class="create-group-card">
-        <h1 th:text="${personalHistory == true ? 'Your Expense History' : 'Group Expense History'}">
-            Expense History
-        </h1>
-        <p th:if="${history.isEmpty()}">No expenses to show yet.</p>
-        <article th:each="expense : ${history}" class="expense-history-entry">
+<body class="history-page">
+<div class="app-shell">
+    <header class="app-header">
+        <nav class="app-nav" aria-label="Main navigation">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/my-groups}">My Groups</a>
+            <a th:href="@{/profile}">Profile</a>
+        </nav>
+    </header>
+
+    <main class="page-content">
+        <header class="page-heading">
+            <h1 th:text="${personalHistory == true ? 'Your Expense History' : 'Group Expense History'}">
+                Expense History
+            </h1>
+            <p>Review expenses, payers, splits, and the groups they belong to.</p>
+        </header>
+
+        <p th:if="${history.isEmpty()}" class="status-message">
+            No expenses to show yet. Expenses you add will appear here.
+        </p>
+
+        <section th:each="expense : ${history}" class="expense-entry">
             <h2>
                 <span th:text="${expense.description}">Expense</span>
-                · ₹<span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}">0.00</span>
+                <span>₹<span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}">0.00</span></span>
             </h2>
             <p>
                 <strong th:text="${expense.groupName}">Group</strong>
@@ -30,7 +49,7 @@
             <p th:if="${expense.creatorName != null}">
                 Recorded by <span th:text="${expense.creatorName}">Member</span>
             </p>
-            <p th:if="${expense.shares.isEmpty()}" role="alert">
+            <p th:if="${expense.shares.isEmpty()}" class="status-message" role="alert">
                 Legacy expense shares are missing; it is excluded from reliable balance calculations.
             </p>
             <ul th:if="${!expense.shares.isEmpty()}">
@@ -40,10 +59,10 @@
                 </li>
             </ul>
             <a th:href="@{'/group/' + ${expense.groupId}}">Open group</a>
-            <hr>
-        </article>
-        <a th:href="@{/dashboard}">Back to dashboard</a>
-    </section>
-</main>
+        </section>
+
+        <a class="back-link" th:href="@{/dashboard}">← Back to dashboard</a>
+    </main>
+</div>
 </body>
 </html>
