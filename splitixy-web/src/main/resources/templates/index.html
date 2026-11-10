@@ -18,20 +18,45 @@
             <span>Splitixy</span>
         </a>
         <nav class="app-nav" aria-label="Main navigation">
-            <a class="app-nav-secondary" th:href="@{/}" aria-current="page">Home</a>
-            <a class="app-nav-primary" th:href="@{/login}">Login</a>
+            <a th:href="@{/login}">Log in</a>
+            <a class="app-nav-primary" th:href="@{/register}">Create account</a>
         </nav>
     </header>
 
     <main class="page-content page-content-wide">
         <section class="landing-copy" aria-labelledby="landing-title">
             <header class="page-heading">
-                <h1 id="landing-title">Shared expenses, made simple.</h1>
-                <p>Keep group expenses clear. See who paid, what each person owes, and settle up without the guesswork.</p>
+                <p class="eyebrow">SHARED EXPENSES, WITHOUT THE GUESSWORK</p>
+                <h1 id="landing-title">Good times together.<br><span>Clear expenses after.</span></h1>
+                <p>Keep group spending organized, understand every split, and know exactly where you stand.</p>
             </header>
             <div class="quick-actions">
                 <a class="app-button" th:href="@{/register}">Get started</a>
-                <a class="app-button-secondary" th:href="@{/login}">Log in</a>
+                <a class="app-button-secondary" th:href="@{/login}">I already have an account</a>
+            </div>
+            <p class="landing-note">A simpler way to share the little things and the big ones.</p>
+        </section>
+
+        <section class="landing-preview" aria-label="Expense sharing overview">
+            <div class="preview-header">
+                <div>
+                    <span class="preview-kicker">GROUP OVERVIEW</span>
+                    <h2>Weekend away</h2>
+                </div>
+                <span class="preview-members">4 members</span>
+            </div>
+            <div class="preview-total">
+                <span>Total shared</span>
+                <strong>₹8,450.00</strong>
+            </div>
+            <div class="preview-rows">
+                <div><span class="preview-dot preview-dot-purple"></span><span>Stay</span><strong>₹5,600.00</strong></div>
+                <div><span class="preview-dot preview-dot-green"></span><span>Groceries</span><strong>₹1,850.00</strong></div>
+                <div><span class="preview-dot preview-dot-yellow"></span><span>Travel</span><strong>₹1,000.00</strong></div>
+            </div>
+            <div class="preview-settlement">
+                <span class="settlement-check" aria-hidden="true">✓</span>
+                <span><strong>Everyone’s in the loop</strong><small>See shares and balances at a glance</small></span>
             </div>
         </section>
     </main>

@@ -13,9 +13,15 @@
 <body class="group-details-page">
 <div class="app-shell">
     <header class="app-header">
+        <a class="app-brand" th:href="@{/dashboard}" aria-label="Splitixy dashboard">
+            <img class="app-brand-mark" th:src="@{/images/splitixy-mark.svg}" alt="">
+            <span>Splitixy</span>
+        </a>
         <nav class="app-nav" aria-label="Main navigation">
             <a th:href="@{/dashboard}">Dashboard</a>
             <a th:href="@{/my-groups}">My Groups</a>
+            <a th:href="@{/history}">History</a>
+            <a th:href="@{/profile}">Profile</a>
         </nav>
     </header>
 
@@ -113,7 +119,7 @@
             </form>
         </section>
 
-        <a class="back-link" th:href="@{/my-groups}">← Back to my groups</a>
+        <a class="back-link" th:href="@{/my-groups}">Back to my groups</a>
     </main>
 </div>
 </body>

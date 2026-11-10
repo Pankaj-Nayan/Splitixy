@@ -13,9 +13,15 @@
 <body class="groups-page">
 <div class="app-shell">
     <header class="app-header">
+        <a class="app-brand" th:href="@{/dashboard}" aria-label="Splitixy dashboard">
+            <img class="app-brand-mark" th:src="@{/images/splitixy-mark.svg}" alt="">
+            <span>Splitixy</span>
+        </a>
         <nav class="app-nav" aria-label="Main navigation">
             <a th:href="@{/dashboard}">Dashboard</a>
-            <a class="app-nav-primary" th:href="@{/create-group}">Create Group</a>
+            <a th:href="@{/history}">History</a>
+            <a th:href="@{/profile}">Profile</a>
+            <a class="app-nav-primary" th:href="@{/create-group}">Create group</a>
         </nav>
     </header>
 
@@ -29,7 +35,7 @@
         </header>
 
         <section th:if="${groups.isEmpty()}" aria-label="No groups">
-            <p class="status-message">You haven’t created any groups yet. Create one to start sharing expenses.</p>
+            <p class="empty-state">You haven’t created any groups yet. Create one to start sharing expenses.</p>
             <a class="app-button" th:href="@{/create-group}">Create your first group</a>
         </section>
 
@@ -44,7 +50,7 @@
             </li>
         </ul>
 
-        <a class="back-link" th:href="@{/dashboard}">← Back to dashboard</a>
+        <a class="back-link" th:href="@{/dashboard}">Back to dashboard</a>
     </main>
 </div>
 </body>

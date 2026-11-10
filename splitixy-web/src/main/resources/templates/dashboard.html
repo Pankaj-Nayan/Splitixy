@@ -13,6 +13,10 @@
 <body class="dashboard-page">
 <div class="app-shell">
     <header class="app-header">
+        <a class="app-brand" th:href="@{/dashboard}" aria-label="Splitixy dashboard">
+            <img class="app-brand-mark" th:src="@{/images/splitixy-mark.svg}" alt="">
+            <span>Splitixy</span>
+        </a>
         <nav class="app-nav" aria-label="Main navigation">
             <a th:href="@{/my-groups}">My Groups</a>
             <a th:href="@{/history}">History</a>
@@ -24,10 +28,11 @@
         <div class="dashboard-grid">
             <div class="dashboard-primary">
                 <section class="dashboard-section">
-                    <div class="dashboard-welcome">
-                        <div class="page-heading">
+                    <div class="dashboard-welcome page-heading">
+                        <div>
+                            <p class="eyebrow">YOUR OVERVIEW</p>
                             <h1>Welcome back, <span th:text="${session.loggedInUser.fullName}">User</span></h1>
-                            <p>Let’s get your shared expenses sorted.</p>
+                            <p>Here’s where your shared spending stands.</p>
                         </div>
                     </div>
                     <p th:if="${param.error}" class="status-message" role="alert">
@@ -35,77 +40,81 @@
                     </p>
                 </section>
 
-                <section class="dashboard-section">
-                    <h2>Outstanding settlements</h2>
-                    <p th:if="${accountingIncomplete}" class="status-message" role="alert">
-                        Some groups have incomplete legacy expenses; those balances are not shown.
-                    </p>
-                    <p th:if="${debts.isEmpty() and !accountingIncomplete}" class="muted-copy">
-                        No outstanding settlements.
-                    </p>
-                    <ul class="balance-list">
-                        <li th:each="debt : ${debts}">
-                            <strong th:text="${debt.debtor}">Member</strong> owes
-                            <strong th:text="${debt.creditor}">Member</strong>
-                            <span class="balance-negative">₹<span th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">0.00</span></span>
-                            in <span th:text="${debt.groupName}">Group</span>
-                        </li>
-                    </ul>
-                </section>
-
-                <section class="dashboard-section">
-                    <h2>Your financial summary</h2>
-                    <ul class="data-list">
-                        <li class="data-row">
+                <section class="dashboard-section summary-section" aria-labelledby="summary-title">
+                    <h2 id="summary-title">Your financial summary</h2>
+                    <ul class="summary-grid">
+                        <li class="summary-item">
                             <span>Total paid</span>
-                            <span class="data-row-value">₹<span th:text="${#numbers.formatDecimal(summary.totalPaid, 1, 2)}">0.00</span></span>
+                            <strong>₹<span th:text="${#numbers.formatDecimal(summary.totalPaid, 1, 2)}">0.00</span></strong>
                         </li>
-                        <li class="data-row">
+                        <li class="summary-item">
                             <span>Your shares</span>
-                            <span class="data-row-value">₹<span th:text="${#numbers.formatDecimal(summary.personalShares, 1, 2)}">0.00</span></span>
+                            <strong>₹<span th:text="${#numbers.formatDecimal(summary.personalShares, 1, 2)}">0.00</span></strong>
                         </li>
-                        <li class="data-row">
+                        <li class="summary-item">
                             <span>You owe</span>
-                            <span class="data-row-value balance-negative">₹<span th:text="${#numbers.formatDecimal(summary.totalOwed, 1, 2)}">0.00</span></span>
+                            <strong class="balance-negative">₹<span th:text="${#numbers.formatDecimal(summary.totalOwed, 1, 2)}">0.00</span></strong>
                         </li>
-                        <li class="data-row">
+                        <li class="summary-item">
                             <span>You’re owed</span>
-                            <span class="data-row-value balance-positive">₹<span th:text="${#numbers.formatDecimal(summary.totalReceivable, 1, 2)}">0.00</span></span>
+                            <strong class="balance-positive">₹<span th:text="${#numbers.formatDecimal(summary.totalReceivable, 1, 2)}">0.00</span></strong>
                         </li>
-                        <li class="data-row">
-                            <span>Net (paid − shares)</span>
-                            <span class="data-row-value">₹<span th:text="${#numbers.formatDecimal(summary.netBalance, 1, 2)}">0.00</span></span>
+                        <li class="summary-item summary-net">
+                            <span>Net balance</span>
+                            <strong>₹<span th:text="${#numbers.formatDecimal(summary.netBalance, 1, 2)}">0.00</span></strong>
                         </li>
                     </ul>
                     <p th:unless="${summary.complete}" class="status-message" role="alert">
                         Some incomplete expense records are excluded.
                     </p>
                 </section>
+
+                <section class="dashboard-section" aria-labelledby="settlements-title">
+                    <h2 id="settlements-title">Outstanding settlements</h2>
+                    <p th:if="${accountingIncomplete}" class="status-message" role="alert">
+                        Some groups have incomplete legacy expenses; those balances are not shown.
+                    </p>
+                    <p th:if="${debts.isEmpty() and !accountingIncomplete}" class="empty-state">
+                        You’re all settled up. Any outstanding balances will appear here.
+                    </p>
+                    <ul class="balance-list">
+                        <li th:each="debt : ${debts}">
+                            <div class="settlement-parties">
+                                <strong th:text="${debt.debtor}">Member</strong>
+                                <span>owes</span>
+                                <strong th:text="${debt.creditor}">Member</strong>
+                                <small>in <span th:text="${debt.groupName}">Group</span></small>
+                            </div>
+                            <span class="settlement-amount balance-negative">₹<span th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">0.00</span></span>
+                        </li>
+                    </ul>
+                </section>
             </div>
 
-            <aside class="dashboard-section" aria-labelledby="quick-actions-title">
+            <aside class="dashboard-section dashboard-sidebar" aria-labelledby="quick-actions-title">
                 <h2 id="quick-actions-title">Quick actions</h2>
                 <div class="dashboard-actions">
                     <a th:href="@{/create-group}" class="dashboard-action">
-                        <img th:src="@{/images/eevee.png}" alt="" aria-hidden="true">
-                        <span>Create Group</span>
+                        <span class="action-icon" aria-hidden="true">+</span>
+                        <span><strong>Create a group</strong><small>Start sharing expenses</small></span>
                     </a>
                     <a th:href="@{/my-groups}" class="dashboard-action">
-                        <img th:src="@{/images/scizor.png}" alt="" aria-hidden="true">
-                        <span>Add Expense</span>
+                        <span class="action-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><path d="M4 7.5h16M6.5 4v7m11-7v7M5 12.5h14v7H5z"/></svg>
+                        </span>
+                        <span><strong>Add an expense</strong><small>Choose a group to continue</small></span>
                     </a>
                     <a th:href="@{/my-groups}" class="dashboard-action">
-                        <img th:src="@{/images/gardevoir.png}" alt="" aria-hidden="true">
-                        <span>My Groups</span>
+                        <span class="action-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24"><rect x="4" y="4.5" width="16" height="15" rx="2"/><path d="M8 9h8M8 13h8M8 17h4"/></svg>
+                        </span>
+                        <span><strong>Browse groups</strong><small>View members and balances</small></span>
                     </a>
-                    <form th:action="@{/logout}" method="post" class="dashboard-action-form">
-                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-                        <button type="submit" class="dashboard-action">
-                            <img th:src="@{/images/oshawott.png}" alt="" aria-hidden="true">
-                            <span>Logout</span>
-                        </button>
-                    </form>
                 </div>
+                <form th:action="@{/logout}" method="post" class="logout-form">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button type="submit" class="text-button">Log out</button>
+                </form>
             </aside>
         </div>
     </main>

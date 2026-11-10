@@ -14,6 +14,15 @@
 </head>
 <body>
 <main class="auth-layout auth-login">
+    <header class="auth-topbar">
+        <a class="app-brand" th:href="@{/}" aria-label="Splitixy home">
+            <img class="app-brand-mark" th:src="@{/images/splitixy-mark.svg}" alt="">
+            <span>Splitixy</span>
+        </a>
+        <nav class="auth-nav" aria-label="Main navigation">
+            <a class="nav-button nav-login" th:href="@{/register}">Create account</a>
+        </nav>
+    </header>
     <section class="auth-main" aria-labelledby="page-title">
         <div class="auth-content">
             <header class="form-heading">
