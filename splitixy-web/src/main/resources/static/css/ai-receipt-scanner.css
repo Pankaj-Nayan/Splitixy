@@ -1,0 +1,513 @@
+.receipt-content {
+    max-width: 980px;
+}
+
+.receipt-eyebrow {
+    color: #7455d9;
+    font-size: .78rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+    margin-bottom: .45rem;
+    text-transform: uppercase;
+}
+
+.receipt-card {
+    background: #fff;
+    border: 1px solid #e8e5f1;
+    border-radius: 20px;
+    box-shadow: 0 16px 48px rgb(34 24 72 / 7%);
+    margin: 1.5rem 0;
+    padding: clamp(1.1rem, 3vw, 2rem);
+}
+
+.receipt-card > h2,
+.receipt-items-section h3,
+.item-adjustments h3,
+.confirmation-summary h3 {
+    margin-top: 0;
+}
+
+.receipt-card > p,
+.receipt-items-section p,
+.item-adjustments > p {
+    color: #656273;
+    line-height: 1.55;
+}
+
+.upload-dropzone {
+    align-items: center;
+    background: #faf9ff;
+    border: 2px dashed #c9c0eb;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+    margin-top: 1.25rem;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.upload-dropzone:hover,
+.upload-dropzone:focus-within {
+    border-color: #7455d9;
+}
+
+.upload-icon {
+    align-items: center;
+    background: #eee9ff;
+    border-radius: 50%;
+    color: #6546cc;
+    display: flex;
+    font-size: 1.6rem;
+    height: 2.8rem;
+    justify-content: center;
+    width: 2.8rem;
+}
+
+#receiptFile {
+    height: 1px;
+    opacity: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.receipt-preview {
+    background: #f7f6fa;
+    border-radius: 12px;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.receipt-preview img {
+    display: block;
+    margin: 0 auto;
+    max-height: 420px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.preview-actions,
+.receipt-actions,
+.section-title-row {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    justify-content: space-between;
+}
+
+.preview-actions {
+    padding: .8rem 1rem;
+}
+
+.preview-actions span,
+.receipt-loading {
+    color: #656273;
+    font-size: .9rem;
+}
+
+.receipt-actions {
+    justify-content: flex-start;
+    margin-top: 1.2rem;
+}
+
+.receipt-loading {
+    align-items: center;
+    display: inline-flex;
+    gap: .55rem;
+}
+
+.receipt-spinner {
+    animation: receipt-spin .8s linear infinite;
+    border: 2px solid #ded8f5;
+    border-radius: 50%;
+    border-top-color: #694bd0;
+    height: 1rem;
+    width: 1rem;
+}
+
+@keyframes receipt-spin {
+    to { transform: rotate(360deg); }
+}
+
+.receipt-notice {
+    background: #fff8e8;
+    border: 1px solid #f0d99b;
+    border-radius: 10px;
+    color: #624814;
+    margin: 1rem 0;
+    padding: .85rem 1rem;
+}
+
+.receipt-notice ul {
+    margin-bottom: 0;
+}
+
+.receipt-extracted-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem 2rem;
+    margin: 1.2rem 0;
+}
+
+.receipt-extracted-summary div {
+    display: flex;
+    gap: .45rem;
+}
+
+.receipt-extracted-summary dt {
+    color: #656273;
+}
+
+.receipt-extracted-summary dd {
+    font-weight: 700;
+    margin: 0;
+}
+
+.group-picker {
+    align-items: end;
+    background: #f8f7fc;
+    border-radius: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    margin: 1.25rem 0;
+    padding: 1rem;
+}
+
+.group-picker label {
+    flex-basis: 100%;
+    font-weight: 700;
+}
+
+.group-picker select {
+    flex: 1 1 250px;
+}
+
+.receipt-review-form {
+    display: grid;
+    gap: 1.3rem;
+}
+
+.receipt-fields {
+    border: 1px solid #e8e5f1;
+    border-radius: 14px;
+    margin: 0;
+    min-width: 0;
+    padding: 1rem;
+}
+
+.receipt-fields legend {
+    font-size: 1.08rem;
+    font-weight: 800;
+    padding: 0 .45rem;
+}
+
+.receipt-form-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.receipt-form-grid .form-field,
+.payer-field {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+}
+
+.receipt-form-grid label,
+.payer-field label,
+.reconciliation-field label {
+    font-weight: 700;
+}
+
+.receipt-form-grid input,
+.receipt-form-grid select,
+.payer-field select,
+.group-picker select,
+.member-share-row input,
+.receipt-item-row input,
+#splitType,
+.reconciliation-field input {
+    border: 1px solid #d9d5e5;
+    border-radius: 8px;
+    font: inherit;
+    min-height: 42px;
+    padding: .55rem .7rem;
+    width: 100%;
+}
+
+.receipt-form-grid small,
+.reconciliation-field small {
+    color: #6f6b7b;
+    line-height: 1.45;
+}
+
+.final-total-field input {
+    border-color: #8065dd;
+    font-weight: 800;
+}
+
+.receipt-items-section {
+    border-top: 1px solid #e8e5f1;
+    padding-top: 1rem;
+}
+
+.section-title-row h3 {
+    margin-bottom: .3rem;
+}
+
+.section-title-row p {
+    margin-top: 0;
+}
+
+.receipt-item-editor {
+    display: grid;
+    gap: .8rem;
+}
+
+.receipt-item-row {
+    background: #faf9fc;
+    border: 1px solid #e8e5f1;
+    border-radius: 12px;
+    display: grid;
+    gap: .8rem;
+    grid-template-columns: 2fr repeat(4, minmax(90px, .8fr)) auto;
+    padding: .9rem;
+}
+
+.receipt-item-row .item-field {
+    display: flex;
+    flex-direction: column;
+    gap: .35rem;
+}
+
+.receipt-item-row label {
+    color: #605c6d;
+    font-size: .82rem;
+    font-weight: 700;
+}
+
+.receipt-item-row .item-name-field {
+    grid-column: span 2;
+}
+
+.item-assignees {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem .85rem;
+    grid-column: 1 / -1;
+}
+
+.item-assignees label,
+.participant-option {
+    align-items: center;
+    display: inline-flex;
+    gap: .4rem;
+    font-weight: 500;
+}
+
+.item-assignees input,
+.participant-option input,
+.confirm-checkbox input,
+.split-option input {
+    min-height: auto;
+    width: auto;
+}
+
+.remove-item {
+    align-self: end;
+    background: transparent;
+    border: 1px solid #d8d2e8;
+    border-radius: 8px;
+    color: #5d4c9f;
+    cursor: pointer;
+    min-height: 42px;
+    padding: .45rem .7rem;
+}
+
+.participant-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem 1.2rem;
+    margin-top: 1rem;
+}
+
+.payer-field {
+    max-width: 420px;
+}
+
+.split-method-options {
+    display: grid;
+    gap: .65rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: .5rem 0 1rem;
+}
+
+.split-option {
+    align-items: flex-start;
+    background: #faf9fc;
+    border: 1px solid #e8e5f1;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    gap: .65rem;
+    padding: .8rem;
+}
+
+.split-option span {
+    display: grid;
+    gap: .25rem;
+}
+
+.split-option small {
+    color: #656273;
+    line-height: 1.4;
+}
+
+#totalSplitOptions {
+    align-items: center;
+    display: flex;
+    gap: .8rem;
+}
+
+#totalSplitOptions label {
+    font-weight: 700;
+}
+
+#splitType {
+    max-width: 280px;
+}
+
+.member-share-inputs {
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: .9rem;
+}
+
+.member-share-row {
+    align-items: center;
+    display: flex;
+    gap: .8rem;
+    justify-content: space-between;
+}
+
+.member-share-row input {
+    max-width: 150px;
+}
+
+.member-share-summary {
+    display: grid;
+    gap: .45rem;
+    margin: .8rem 0;
+}
+
+.member-share-summary > div {
+    display: flex;
+    justify-content: space-between;
+}
+
+.adjustment-allocation-grid {
+    display: grid;
+    gap: .55rem;
+    margin: 1rem 0;
+}
+
+.adjustment-allocation-row {
+    align-items: center;
+    background: #faf9fc;
+    border-radius: 9px;
+    display: grid;
+    gap: .6rem;
+    grid-template-columns: minmax(100px, 1fr) repeat(4, minmax(90px, 1fr));
+    padding: .6rem;
+}
+
+.adjustment-allocation-row label {
+    color: #656273;
+    display: grid;
+    font-size: .8rem;
+    gap: .25rem;
+}
+
+.adjustment-allocation-row input {
+    border: 1px solid #d9d5e5;
+    border-radius: 7px;
+    font: inherit;
+    min-height: 38px;
+    padding: .4rem;
+    width: 100%;
+}
+
+.reconciliation-field {
+    display: grid;
+    gap: .45rem;
+    margin-top: 1rem;
+    max-width: 400px;
+}
+
+.confirmation-summary {
+    background: #f8f7fc;
+    border: 1px solid #e4dff2;
+    border-radius: 14px;
+    padding: 1rem;
+}
+
+.confirmation-summary dl {
+    display: grid;
+    gap: .55rem 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.confirmation-summary dl div {
+    display: flex;
+    flex-direction: column;
+    gap: .15rem;
+}
+
+.confirmation-summary dt {
+    color: #6b6777;
+    font-size: .85rem;
+}
+
+.confirmation-summary dd {
+    font-weight: 700;
+    margin: 0;
+}
+
+.confirm-checkbox {
+    align-items: flex-start;
+    display: flex;
+    gap: .65rem;
+    line-height: 1.5;
+    margin-top: 1rem;
+}
+
+@media (max-width: 720px) {
+    .receipt-form-grid,
+    .split-method-options,
+    .confirmation-summary dl,
+    .member-share-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    .receipt-item-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .adjustment-allocation-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .receipt-item-row .item-name-field,
+    .item-assignees {
+        grid-column: 1 / -1;
+    }
+
+    .remove-item {
+        grid-column: 1 / -1;
+    }
+}
