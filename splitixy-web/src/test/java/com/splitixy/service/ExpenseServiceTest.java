@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -92,6 +93,24 @@ class ExpenseServiceTest {
     }
 
     @Test
+    void equalSplitUsesOnlyExplicitlySelectedParticipants() {
+        when(groupMemberRepository.findByIdGroupId(10))
+                .thenReturn(List.of(member(1), member(2), member(3)));
+        mockExpenseSave();
+
+        expenseService.createExpense(
+                expense("10.00", 1), "EQUAL", Map.of(), Set.of(1, 3));
+
+        ArgumentCaptor<ExpenseSplit> splits = ArgumentCaptor.forClass(ExpenseSplit.class);
+        verify(expenseSplitRepository, times(2)).save(splits.capture());
+        assertEquals(List.of(1, 3),
+                splits.getAllValues().stream().map(ExpenseSplit::getUserId).toList());
+        assertEquals(
+                List.of(new BigDecimal("5.00"), new BigDecimal("5.00")),
+                splits.getAllValues().stream().map(ExpenseSplit::getAmountOwed).toList());
+    }
+
+    @Test
     void customSplitPersistsProvidedSharesAndRejectsIncorrectTotals() {
         Expense expense = expense("100.00", 2);
         mockExpenseSave();
@@ -116,6 +135,21 @@ class ExpenseServiceTest {
     }
 
     @Test
+    void existingCustomSplitFlowStillAllowsOmittedZeroShares() {
+        mockExpenseSave();
+
+        expenseService.createExpense(
+                expense("100.00", 1),
+                "CUSTOM",
+                Map.of(1, new BigDecimal("100.00")));
+
+        ArgumentCaptor<ExpenseSplit> split = ArgumentCaptor.forClass(ExpenseSplit.class);
+        verify(expenseSplitRepository).save(split.capture());
+        assertEquals(1, split.getValue().getUserId());
+        assertEquals(new BigDecimal("100.00"), split.getValue().getAmountOwed());
+    }
+
+    @Test
     void rejectsPayerOrShareOutsideGroup() {
         assertThrows(IllegalArgumentException.class, () -> expenseService.createExpense(
                 expense("10.00", 99),
@@ -125,6 +159,16 @@ class ExpenseServiceTest {
                 expense("10.00", 1),
                 "CUSTOM",
                 Map.of(99, new BigDecimal("10.00"))));
+    }
+
+    @Test
+    void customSharesMustMatchTheSelectedParticipants() {
+        assertThrows(IllegalArgumentException.class, () -> expenseService.createExpense(
+                expense("100.00", 1),
+                "CUSTOM",
+                Map.of(1, new BigDecimal("50.00"), 2, new BigDecimal("50.00")),
+                Set.of(1)));
+        verify(expenseRepository, never()).save(any(Expense.class));
     }
 
     private GroupMember member(int userId) {

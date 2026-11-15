@@ -235,14 +235,10 @@ body.dashboard-page .app-shell::after {
 }
 
 .app-brand-mark {
-    display: grid;
     width: 34px;
     height: 34px;
-    place-items: center;
-    border: 1.5px solid var(--purple);
-    border-radius: 10px;
-    color: var(--purple);
-    font-size: 18px;
+    border-radius: 11px;
+    object-fit: cover;
 }
 
 .app-nav {
@@ -883,8 +879,7 @@ body::before {
     width: 38px;
     height: 38px;
     border: 0;
-    border-radius: 0;
-    color: transparent;
+    border-radius: 12px;
     object-fit: cover;
 }
 

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" th:href="@{/images/splitixy-mark.svg}">
+    <title>AI Expense Assistant | Splitixy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/ai-expense-assistant.css}">
+</head>
+<body class="ai-assistant-page">
+<div class="app-shell">
+    <header class="app-header">
+        <a class="app-brand" th:href="@{/dashboard}" aria-label="Splitixy dashboard">
+            <img class="app-brand-mark" th:src="@{/images/splitixy-mark.svg}" alt="">
+            <span>Splitixy</span>
+        </a>
+        <nav class="app-nav" aria-label="Main navigation">
+            <a th:href="@{/dashboard}">Dashboard</a>
+            <a th:href="@{/my-groups}">My Groups</a>
+            <a th:href="@{/history}">History</a>
+            <a th:href="@{/profile}">Profile</a>
+        </nav>
+    </header>
+
+    <main class="page-content assistant-content">
+        <header class="page-heading">
+            <p class="assistant-eyebrow">Group expense</p>
+            <h1>AI Expense Assistant</h1>
+            <p>Describe what happened. Review every detail before it reaches your group ledger.</p>
+        </header>
+
+        <div th:if="${error}" class="status-message" role="alert" th:text="${error}">Error</div>
+
+        <section th:if="${confirmation == null}" class="assistant-card">
+            <form id="extractForm"
+                  th:action="@{'/group/' + ${groupId} + '/expense/assistant/extract'}"
+                  method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <label for="expensePrompt">What was the expense?</label>
+                <textarea id="expensePrompt" name="prompt" rows="5" maxlength="2000"
+                          placeholder="For example: I paid 1500 rupees for dinner with Rahul and Alex. Split equally."
+                          th:text="${prompt}"></textarea>
+                <p class="assistant-hint">
+                    Include the amount, who paid, who shares it, and how to split it when you know.
+                    Missing details will be left for you to review.
+                </p>
+                <div class="assistant-actions">
+                    <button id="extractButton" class="app-button" type="submit">
+                        Extract expense details
+                    </button>
+                    <span id="loadingMessage" class="assistant-loading" role="status" hidden>
+                        <span class="assistant-spinner" aria-hidden="true"></span>
+                        Asking Gemini to review the description…
+                    </span>
+                </div>
+            </form>
+        </section>
+
+        <section th:if="${confirmation == true}" class="assistant-card review-card">
+            <h2>Review before adding</h2>
+            <p class="assistant-hint">
+                Check the extracted details. The expense is not saved until you confirm.
+                Select participants and a split explicitly if they were not clear.
+            </p>
+
+            <div th:if="${!draft.issues.isEmpty()}" class="assistant-notices" role="status">
+                <strong>Items to review</strong>
+                <ul>
+                    <li th:each="issue : ${draft.issues}" th:text="${issue}">Clarification</li>
+                </ul>
+            </div>
+            <div th:if="${!draft.contributionNotes.isEmpty()}" class="assistant-notices">
+                <strong>Stated contributions (not split shares)</strong>
+                <ul>
+                    <li th:each="contribution : ${draft.contributionNotes}"
+                        th:text="${contribution}">Contribution</li>
+                </ul>
+            </div>
+            <div th:if="${errors != null}" class="status-message" role="alert">
+                <ul>
+                    <li th:each="message : ${errors}" th:text="${message}">Validation error</li>
+                </ul>
+            </div>
+            <p th:if="${requiresSinglePayerRevision == true}" class="assistant-notices">
+                Return to the description and identify one payer, or split this into separate
+                expenses. No expense has been saved.
+            </p>
+
+            <section class="assistant-summary" aria-label="Expense summary">
+                <dl>
+                    <div><dt>Description</dt><dd th:text="${draft.description != '' ? draft.description : 'Needs confirmation'}">Needs confirmation</dd></div>
+                    <div><dt>Total</dt><dd><span th:text="${draft.amount != '' ? draft.amount : 'Needs confirmation'}">Needs confirmation</span> <span th:text="${draft.currency}">INR</span></dd></div>
+                    <div><dt>Date</dt><dd th:text="${draft.date != '' ? draft.date : 'Needs confirmation'}">Needs confirmation</dd></div>
+                    <div><dt>Category</dt><dd th:text="${draft.category != '' ? draft.category : 'Not specified'}">Not specified</dd></div>
+                    <div>
+                        <dt>Paid by</dt>
+                        <dd>
+                            <span th:each="member : ${users}"
+                                  th:if="${draft.payerId != null and draft.payerId == member.id}"
+                                  th:text="${member.fullName != null and !#strings.isEmpty(member.fullName) ? member.fullName : member.email}">Member</span>
+                            <span th:if="${draft.payerId == null}">Needs confirmation</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Participants</dt>
+                        <dd>
+                            <span th:each="member, iter : ${users}"
+                                  th:if="${draft.participantIds.contains(member.id)}">
+                                <span th:text="${member.fullName != null and !#strings.isEmpty(member.fullName) ? member.fullName : member.email}">Member</span><span th:if="${!iter.last}">, </span>
+                            </span>
+                            <span th:if="${draft.participantIds.isEmpty()}">Needs confirmation</span>
+                        </dd>
+                    </div>
+                    <div><dt>Split type</dt><dd th:text="${draft.splitType != '' ? draft.splitType : 'Needs confirmation'}">Needs confirmation</dd></div>
+                    <div th:if="${draft.splitType == 'CUSTOM' and !draft.shares.isEmpty()}">
+                        <dt>Individual shares</dt>
+                        <dd>
+                            <span th:each="share, iter : ${draft.shares}">
+                                <span th:each="member : ${users}"
+                                      th:if="${share.key == member.id}"
+                                      th:text="${member.fullName != null and !#strings.isEmpty(member.fullName) ? member.fullName : member.email}">Member</span>
+                                <span th:text="${share.value}">0.00</span><span th:if="${!iter.last}">; </span>
+                            </span>
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+
+            <form th:unless="${draft.multipleContributors or requiresSinglePayerRevision == true}"
+                  th:action="@{'/group/' + ${groupId} + '/expense/assistant/confirm'}"
+                  method="post" class="assistant-edit-form">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                <details id="expense-details">
+                    <summary>Edit Details</summary>
+                    <div class="assistant-fields">
+                        <div class="form-field">
+                            <label for="description">Description</label>
+                            <input id="description" name="description" type="text" maxlength="255"
+                                   required th:value="${draft.description}">
+                        </div>
+                        <div class="assistant-field-grid">
+                            <div class="form-field">
+                                <label for="amount">Total amount</label>
+                                <input id="amount" name="amount" type="number" min="0.01"
+                                       step="0.01" required th:value="${draft.amount}">
+                            </div>
+                            <div class="form-field">
+                                <label for="currency">Currency</label>
+                                <input id="currency" name="currency" type="text" maxlength="3"
+                                       autocapitalize="characters" placeholder="INR"
+                                       required th:value="${draft.currency}">
+                                <small>Only INR is supported for group balances.</small>
+                            </div>
+                        </div>
+                        <div class="assistant-field-grid">
+                            <div class="form-field">
+                                <label for="expenseDate">Expense date</label>
+                                <input id="expenseDate" name="expenseDate" type="date" required
+                                       th:value="${draft.date}">
+                            </div>
+                            <div class="form-field">
+                                <label for="category">Category</label>
+                                <select id="category" name="category">
+                                    <option value="">Not specified</option>
+                                    <option th:each="option : ${categories}" th:value="${option}"
+                                            th:text="${option}"
+                                            th:selected="${draft.category == option}">Category</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label for="paidBy">Paid by</label>
+                            <select id="paidBy" name="paidBy" required>
+                                <option value="">Select a group member</option>
+                                <option th:each="member : ${users}" th:value="${member.id}"
+                                        th:text="${member.fullName != null and !#strings.isEmpty(member.fullName) ? member.fullName : member.email}"
+                                        th:selected="${draft.payerId != null and draft.payerId == member.id}">
+                                    Member
+                                </option>
+                            </select>
+                        </div>
+                        <fieldset class="participant-picker">
+                            <legend>Who shares this expense?</legend>
+                            <label th:each="member : ${users}" class="participant-option">
+                                <input type="checkbox" name="participantIds" th:value="${member.id}"
+                                       th:checked="${draft.participantIds.contains(member.id)}">
+                                <span th:text="${member.fullName != null and !#strings.isEmpty(member.fullName) ? member.fullName : member.email}">Member</span>
+                            </label>
+                        </fieldset>
+                        <div class="form-field">
+                            <label for="splitType">Split type</label>
+                            <select id="splitType" name="splitType" required>
+                                <option value="">Choose a split type</option>
+                                <option value="EQUAL" th:selected="${draft.splitType == 'EQUAL'}">Equal split between selected participants</option>
+                                <option value="CUSTOM" th:selected="${draft.splitType == 'CUSTOM'}">Custom shares</option>
+                            </select>
+                        </div>
+                        <section id="customShares" class="custom-shares" hidden>
+                            <h3>Custom shares</h3>
+                            <div th:each="member : ${users}" class="form-field share-field"
+                                 th:attr="data-member-id=${member.id}">
+                                <label th:for="'share_' + ${member.id}"
+                                       th:text="${member.fullName != null and !#strings.isEmpty(member.fullName) ? member.fullName : member.email}">
+                                    Member
+                                </label>
+                                <input type="number" min="0" step="0.01"
+                                       th:id="'share_' + ${member.id}"
+                                       th:name="'share_' + ${member.id}"
+                                       th:value="${draft.shares[member.id]}">
+                            </div>
+                            <p class="assistant-hint">Custom shares must add up exactly to the total.</p>
+                        </section>
+                    </div>
+                </details>
+                <div class="assistant-actions">
+                    <button class="app-button" type="submit">Confirm and Add Expense</button>
+                    <a class="app-button-secondary"
+                       th:href="@{'/group/' + ${groupId} + '/expense/assistant'}">Edit description</a>
+                    <a class="app-button-secondary" th:href="@{'/group/' + ${groupId}}">Cancel</a>
+                </div>
+            </form>
+            <a th:if="${draft.multipleContributors or requiresSinglePayerRevision == true}"
+               class="app-button-secondary"
+               th:href="@{'/group/' + ${groupId} + '/expense/assistant'}">Revise description</a>
+        </section>
+        <a class="back-link" th:href="@{'/group/' + ${groupId}}">Back to group</a>
+    </main>
+</div>
+<script th:src="@{/js/ai-expense-assistant.js}"></script>
+</body>
+</html>

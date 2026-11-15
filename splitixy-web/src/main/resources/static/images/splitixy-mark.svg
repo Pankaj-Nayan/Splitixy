@@ -1,4 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img">
-    <path fill="#7C22E8" d="M0 0h64v64H0z"/>
-    <path fill="#fff" d="M16 12h32v10H27l10 10-10 10h21v10H16l16-20z"/>
+    <defs>
+        <linearGradient id="splitixy-mark-gradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8b5cf6"/>
+            <stop offset="1" stop-color="#5b21b6"/>
+        </linearGradient>
+    </defs>
+    <rect x="1" y="1" width="62" height="62" rx="18" fill="url(#splitixy-mark-gradient)"/>
+    <path d="M20 32h24" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="4"/>
+    <circle cx="17" cy="32" r="7" fill="#fff"/>
+    <circle cx="32" cy="32" r="7" fill="#fff"/>
+    <circle cx="47" cy="32" r="7" fill="#fff"/>
+    <circle cx="17" cy="32" r="2.5" fill="#6d28d9"/>
+    <circle cx="32" cy="32" r="2.5" fill="#6d28d9"/>
+    <circle cx="47" cy="32" r="2.5" fill="#6d28d9"/>
 </svg>

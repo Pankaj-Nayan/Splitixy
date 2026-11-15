@@ -54,6 +54,15 @@ public class ExpenseService {
             Expense expense,
             String splitType,
             Map<Integer, BigDecimal> requestedShares) {
+        return createExpense(expense, splitType, requestedShares, null);
+    }
+
+    @Transactional
+    public Expense createExpense(
+            Expense expense,
+            String splitType,
+            Map<Integer, BigDecimal> requestedShares,
+            Set<Integer> requestedParticipants) {
         BigDecimal amount = normalizeAmount(expense.getAmount());
         if (amount.signum() <= 0) {
             throw new IllegalArgumentException("Expense amount must be positive");
@@ -80,9 +89,29 @@ public class ExpenseService {
             throw new IllegalArgumentException("The selected payer is not a group member");
         }
 
+        if (requestedParticipants != null
+                && (requestedParticipants.isEmpty()
+                || requestedParticipants.stream().anyMatch(Objects::isNull))) {
+            throw new IllegalArgumentException(
+                    "Select valid group members who share the expense");
+        }
+        Set<Integer> participantIds = requestedParticipants == null
+                ? memberIds
+                : Set.copyOf(requestedParticipants);
+        if (participantIds.isEmpty() || !memberIds.containsAll(participantIds)) {
+            throw new IllegalArgumentException(
+                    "Every selected participant must belong to the group");
+        }
+
         Map<Integer, BigDecimal> shares = "EQUAL".equals(splitType)
-                ? calculateEqualShares(amount, members)
+                ? calculateEqualShares(amount, participantIds)
                 : validateCustomShares(amount, requestedShares, memberIds);
+        if (requestedParticipants != null
+                && "CUSTOM".equals(splitType)
+                && !shares.keySet().equals(participantIds)) {
+            throw new IllegalArgumentException(
+                    "Enter a share for every selected participant and no other members");
+        }
 
         expense.setAmount(amount);
         expense.setDescription(expense.getDescription().trim());
@@ -168,9 +197,8 @@ public class ExpenseService {
 
     private Map<Integer, BigDecimal> calculateEqualShares(
             BigDecimal amount,
-            List<GroupMember> members) {
-        List<Integer> userIds = members.stream()
-                .map(member -> member.getId().getUserId())
+            Set<Integer> participantIds) {
+        List<Integer> userIds = participantIds.stream()
                 .sorted()
                 .toList();
         BigInteger totalCents = amount.movePointRight(2).toBigIntegerExact();
@@ -251,6 +279,8 @@ public class ExpenseService {
                             ? "Unavailable expense"
                             : expense.getDescription(),
                     expense.getAmount(),
+                    expense.getCurrency(),
+                    expense.getCategory(),
                     expense.getExpenseDate(),
                     expense.getSplitType() == null ? "Legacy / unknown" : expense.getSplitType(),
                     displayName(payer),

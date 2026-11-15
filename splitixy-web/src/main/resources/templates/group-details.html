@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" th:href="@{/images/splitixy-mark.svg}">
     <title>Group | Splitixy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,6 +49,8 @@
                 <h2 class="section-heading" id="expenses-title">Expenses</h2>
                 <div class="quick-actions">
                     <a class="app-button-secondary" th:href="@{'/group/' + ${groupId} + '/expenses'}">Expense history</a>
+                    <a class="app-button-secondary" th:href="@{'/group/' + ${groupId} + '/expense/assistant'}">AI assistant</a>
+                    <a class="app-button-secondary" th:href="@{/receipt-scanner(groupId=${groupId})}">Scan receipt</a>
                     <a class="app-button" th:href="@{'/group/' + ${groupId} + '/expense/add'}">Add expense</a>
                 </div>
             </div>
@@ -58,6 +61,9 @@
                     <span th:text="${expense.description}">Expense</span>
                     <span>₹<span th:text="${#numbers.formatDecimal(expense.amount, 1, 2)}">0.00</span></span>
                 </h2>
+                <p th:if="${expense.category != null}">
+                    Category: <span th:text="${expense.category}">Category</span>
+                </p>
                 <p>
                     Paid by <strong th:text="${expense.payerName}">Member</strong>
                     <span th:if="${expense.creatorName != null}">

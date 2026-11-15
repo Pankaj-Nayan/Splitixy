@@ -57,6 +57,8 @@ class ExpenseHistoryTest {
         expense.setCreatedBy(2);
         expense.setDescription("Tickets");
         expense.setAmount(new BigDecimal("1500.00"));
+        expense.setCurrency("INR");
+        expense.setCategory("Travel");
         expense.setSplitType("EQUAL");
         expense.setExpenseDate(LocalDateTime.of(2026, 11, 1, 10, 30));
 
@@ -79,6 +81,8 @@ class ExpenseHistoryTest {
         assertEquals("Pankaj Nayan", item.getPayerName());
         assertEquals("Mew", item.getCreatorName());
         assertEquals("EQUAL", item.getSplitType());
+        assertEquals("INR", item.getCurrency());
+        assertEquals("Travel", item.getCategory());
         assertEquals(expense.getExpenseDate(), item.getExpenseDate());
         assertEquals(List.of("Pankaj Nayan", "Mew"),
                 item.getShares().stream().map(ExpenseHistoryItem.Share::getMemberName).toList());

@@ -11,6 +11,8 @@ public class ExpenseHistoryItem {
     private final String groupName;
     private final String description;
     private final BigDecimal amount;
+    private final String currency;
+    private final String category;
     private final LocalDateTime expenseDate;
     private final String splitType;
     private final String payerName;
@@ -23,6 +25,8 @@ public class ExpenseHistoryItem {
             String groupName,
             String description,
             BigDecimal amount,
+            String currency,
+            String category,
             LocalDateTime expenseDate,
             String splitType,
             String payerName,
@@ -33,6 +37,8 @@ public class ExpenseHistoryItem {
         this.groupName = groupName;
         this.description = description;
         this.amount = amount;
+        this.currency = currency;
+        this.category = category;
         this.expenseDate = expenseDate;
         this.splitType = splitType;
         this.payerName = payerName;
@@ -58,6 +64,14 @@ public class ExpenseHistoryItem {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getCategory() {
+        return category;
     }
 
     public LocalDateTime getExpenseDate() {

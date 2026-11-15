@@ -34,6 +34,12 @@ public class Expense {
     @Column(name = "split_type", length = 16)
     private String splitType;
 
+    @Column(length = 64)
+    private String category;
+
+    @Column(length = 3)
+    private String currency = "INR";
+
     public Expense() {
     }
 
@@ -101,10 +107,29 @@ public class Expense {
         this.splitType = splitType;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     @PrePersist
     void setDefaultExpenseDate() {
         if (expenseDate == null) {
             expenseDate = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        }
+        if (currency == null || currency.isBlank()) {
+            currency = "INR";
         }
     }
 }
