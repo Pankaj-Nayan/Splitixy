@@ -1235,6 +1235,148 @@ body::before {
     --surface: #fff;
 }
 
+.settlement-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 12px;
+}
+
+.settlements-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.settlements-heading .section-heading {
+    margin: 0;
+}
+
+.group-debt-description {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.reminder-form {
+    flex-shrink: 0;
+    margin: 0;
+}
+
+.reminder-button {
+    display: inline-flex;
+    min-height: 38px;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 13px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--deep-purple);
+    cursor: pointer;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    transition: background-color .15s ease, border-color .15s ease, opacity .15s ease;
+}
+
+.reminder-button:hover:not(:disabled) {
+    border-color: var(--purple);
+    background: var(--lavender);
+}
+
+.reminder-button svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+}
+
+.reminder-button:disabled {
+    cursor: wait;
+    opacity: .68;
+}
+
+.reminder-button-primary {
+    border-color: var(--purple);
+    background: var(--purple);
+    color: #fff;
+}
+
+.reminder-button-primary:hover:not(:disabled) {
+    background: var(--deep-purple);
+    color: #fff;
+}
+
+.reminder-toast {
+    position: fixed;
+    z-index: 20;
+    right: 24px;
+    bottom: 24px;
+    max-width: min(440px, calc(100vw - 32px));
+    padding: 13px 17px;
+    border: 1px solid #d6eadd;
+    border-radius: 9px;
+    background: #f6fbf7;
+    box-shadow: 0 8px 26px #24183a1a;
+    color: #28643f;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(8px);
+    transition: opacity .16s ease, transform .16s ease;
+}
+
+.reminder-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.reminder-toast-error {
+    border-color: #f0d7dc;
+    background: #fff8f8;
+    color: #853b46;
+}
+
+.dashboard-page .balance-list li {
+    gap: 12px;
+}
+
+@media (max-width: 700px) {
+    .dashboard-page .balance-list li,
+    .group-details-page .balance-list li {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .settlement-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .settlements-heading {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 420px) {
+    .settlements-heading {
+        flex-direction: column;
+    }
+
+    .reminder-toast {
+        right: 16px;
+        bottom: 16px;
+    }
+}
+
 html,
 body {
     background: var(--background);
@@ -2169,5 +2311,20 @@ a {
         transition-duration: .01ms !important;
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
+    }
+}
+
+.group-details-page .balance-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+@media (max-width: 700px) {
+    .dashboard-page .balance-list li,
+    .group-details-page .balance-list li {
+        align-items: flex-start;
+        flex-direction: column;
     }
 }

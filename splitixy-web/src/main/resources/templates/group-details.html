@@ -87,7 +87,21 @@
         </section>
 
         <section class="content-section" aria-labelledby="balances-title">
-            <h2 class="section-heading" id="balances-title">Balances</h2>
+            <div class="settlements-heading">
+                <h2 class="section-heading" id="balances-title">Who Owes Whom</h2>
+                <form th:if="${canManageMembers and accountingComplete and !debts.isEmpty()}"
+                      th:action="@{'/group/' + ${groupId} + '/reminders'}"
+                      method="post" class="reminder-form">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button class="reminder-button reminder-button-primary" type="submit">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3.5" y="5.5" width="17" height="13" rx="2"/>
+                            <path d="m4.5 7 7.5 6 7.5-6"/>
+                        </svg>
+                        <span>Remind All</span>
+                    </button>
+                </form>
+            </div>
             <div th:if="${accountingError != null}" class="status-message" role="alert">
                 Financial records need review:
                 <span th:text="${accountingError}">Incomplete financial record</span>
@@ -97,10 +111,26 @@
             </p>
             <ul th:if="${accountingComplete and !debts.isEmpty()}" class="balance-list">
                 <li th:each="debt : ${debts}">
-                    <strong th:text="${debt.debtor}">Person</strong> owes
-                    <strong th:text="${debt.creditor}">Person</strong>
-                    <span class="balance-negative">₹<span th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">0.00</span></span>
-                    in <span th:text="${debt.groupName}">Group</span>
+                    <span class="group-debt-description">
+                        <strong th:text="${debt.debtor}">Person</strong> owes
+                        <strong th:text="${debt.creditor}">Person</strong>
+                        <span class="balance-negative">₹<span th:text="${#numbers.formatDecimal(debt.amount, 1, 2)}">0.00</span></span>
+                        in <span th:text="${debt.groupName}">Group</span>
+                    </span>
+                    <form th:if="${canManageMembers or debt.creditorId == session.loggedInUser.id}"
+                          th:action="@{'/group/' + ${groupId} + '/reminders'}"
+                          method="post" class="reminder-form">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <input type="hidden" name="debtorId" th:value="${debt.debtorId}">
+                        <input type="hidden" name="creditorId" th:value="${debt.creditorId}">
+                        <button class="reminder-button" type="submit">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <rect x="3.5" y="5.5" width="17" height="13" rx="2"/>
+                                <path d="m4.5 7 7.5 6 7.5-6"/>
+                            </svg>
+                            <span>Send Email Reminder</span>
+                        </button>
+                    </form>
                 </li>
             </ul>
         </section>
@@ -128,5 +158,6 @@
         <a class="back-link" th:href="@{/my-groups}">Back to my groups</a>
     </main>
 </div>
+<script th:src="@{/js/reminders.js}" defer></script>
 </body>
 </html>

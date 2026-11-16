@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class DashboardController {
@@ -33,8 +35,12 @@ public class DashboardController {
         }
         List<ExpenseGroup> groups = expenseGroupService.getMyGroups(user.getId());
         List<BalanceService.Debt> debts = new ArrayList<>();
+        Set<Integer> manageableGroupIds = new HashSet<>();
         boolean incomplete = false;
         for (ExpenseGroup group : groups) {
+            if (user.getId().equals(group.getCreatedBy())) {
+                manageableGroupIds.add(group.getGroupId());
+            }
             try {
                 for (BalanceService.Debt debt :
                         balanceService.calculateDebts(group.getGroupId())) {
@@ -49,6 +55,7 @@ public class DashboardController {
         }
         model.addAttribute("groups", groups);
         model.addAttribute("debts", debts);
+        model.addAttribute("manageableGroupIds", manageableGroupIds);
         model.addAttribute("summary", balanceService.calculatePersonalSummary(user.getId()));
         model.addAttribute("accountingIncomplete", incomplete);
         return "dashboard";

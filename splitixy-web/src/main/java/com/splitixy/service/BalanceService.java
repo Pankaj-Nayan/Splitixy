@@ -133,6 +133,7 @@ public class BalanceService {
                     .setScale(2, RoundingMode.HALF_UP);
             if (amount.signum() > 0) {
                 debts.add(new Debt(
+                        groupId,
                         debtor.userId(),
                         creditor.userId(),
                         debtor.name(),
@@ -279,6 +280,7 @@ public class BalanceService {
     }
 
     public static class Debt {
+        private final Integer groupId;
         private final Integer debtorId;
         private final Integer creditorId;
         private final String debtor;
@@ -287,12 +289,14 @@ public class BalanceService {
         private final BigDecimal amount;
 
         public Debt(
+                Integer groupId,
                 Integer debtorId,
                 Integer creditorId,
                 String debtor,
                 String creditor,
                 String groupName,
                 BigDecimal amount) {
+            this.groupId = groupId;
             this.debtorId = debtorId;
             this.creditorId = creditorId;
             this.debtor = debtor;
@@ -303,6 +307,10 @@ public class BalanceService {
 
         public Integer getDebtorId() {
             return debtorId;
+        }
+
+        public Integer getGroupId() {
+            return groupId;
         }
 
         public Integer getCreditorId() {
