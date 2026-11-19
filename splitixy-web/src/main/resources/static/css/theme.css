@@ -1,0 +1,802 @@
+:root {
+    color-scheme: dark;
+    --purple: #a88bd8;
+    --bright-purple: #baa0e7;
+    --deep-purple: #c1a8ef;
+    --dark-purple: #f5f0ff;
+    --background: #0b0910;
+    --lavender: rgb(84 32 120 / 18%);
+    --soft-purple: rgb(84 32 120 / 26%);
+    --text: #f5f0ff;
+    --muted: #a99bbe;
+    --border: rgb(155 119 184 / 42%);
+    --success: #8bc9a4;
+    --error: #e6a0ad;
+    --surface: rgb(19 15 25 / 88%);
+    --white: #f5f0ff;
+}
+
+html,
+body {
+    min-height: 100%;
+    background: var(--background);
+}
+
+body {
+    position: relative;
+    overflow-x: hidden;
+    background:
+        radial-gradient(ellipse 52rem 42rem at 88% 40%, rgb(84 32 120 / 44%), transparent 72%),
+        radial-gradient(ellipse 44rem 36rem at 14% 88%, rgb(53 19 79 / 42%), transparent 74%),
+        #0b0910;
+    color: var(--text);
+}
+
+body::before {
+    position: fixed;
+    z-index: 0;
+    inset: 0;
+    display: block;
+    background:
+        radial-gradient(ellipse at 76% 34%, rgb(120 76 151 / 15%), transparent 43%),
+        linear-gradient(135deg, transparent 0 68%, rgb(171 141 216 / 2%) 68.1% 68.3%, transparent 68.4%);
+    content: "";
+    pointer-events: none;
+}
+
+.app-shell,
+.auth-layout {
+    position: relative;
+    z-index: 1;
+    color: var(--text);
+}
+
+.app-shell::before,
+.app-shell::after {
+    display: none;
+}
+
+a {
+    color: var(--purple);
+}
+
+.app-header {
+    border-bottom-color: rgb(112 94 132 / 32%);
+}
+
+.app-brand,
+.page-heading h1,
+.page-heading h2,
+.section-heading,
+.dashboard-section h2,
+.data-row-title,
+.data-row-value,
+.form-field label,
+.expense-entry h2,
+.back-link,
+.review-card > h2,
+.participant-picker legend,
+.custom-shares h3 {
+    color: var(--text);
+}
+
+.app-brand {
+    text-shadow: 0 0 26px rgb(161 128 208 / 12%);
+}
+
+.app-brand-mark {
+    filter: drop-shadow(0 0 12px rgb(161 128 208 / 17%));
+}
+
+.page-heading p,
+.muted-copy,
+.section-note,
+.data-row-meta,
+.expense-entry p,
+.expense-entry ul,
+.assistant-hint,
+.assistant-card small {
+    color: var(--muted);
+}
+
+.page-heading h1,
+.page-heading h2,
+.section-heading,
+.dashboard-section h2,
+.form-heading h1 {
+    text-shadow: 0 0 24px rgb(161 128 208 / 10%);
+}
+
+.app-header,
+.content-section,
+.data-row,
+.member-list li,
+.balance-list li,
+.expense-entry,
+.dashboard-actions,
+.dashboard-section > h2 {
+    border-color: rgb(155 119 184 / 24%);
+}
+
+.app-nav a,
+.app-nav button,
+.app-button,
+.app-button-secondary,
+.nav-button,
+.primary-button,
+.social-button,
+.reminder-button,
+.text-button,
+.dashboard-action,
+.back-link,
+.action-btn,
+.remove-item {
+    position: relative;
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    transition: background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease, transform .18s ease;
+    clip-path: polygon(13px 0, 100% 0, calc(100% - 13px) 100%, 0 100%);
+}
+
+.app-nav a,
+.app-nav button {
+    min-height: 40px;
+    padding: 0 17px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.app-nav a:hover,
+.app-nav button:hover,
+.app-button:hover,
+.app-button-secondary:hover,
+.nav-button:hover,
+.primary-button:hover,
+.social-button:hover,
+.reminder-button:hover:not(:disabled),
+.text-button:hover,
+.dashboard-action:hover,
+.back-link:hover,
+.action-btn:hover,
+.remove-item:hover {
+    border-color: rgb(175 145 222 / 72%);
+    background: rgb(84 32 120 / 16%);
+    color: #fff;
+    box-shadow: 0 0 24px rgb(119 83 159 / 12%);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.app-nav .app-nav-primary,
+.app-nav .app-nav-secondary,
+.app-button,
+.app-button-secondary,
+.nav-home,
+.nav-login,
+.primary-button,
+.reminder-button-primary {
+    border-color: rgb(168 139 216 / 66%);
+    background: transparent;
+    color: #f5f0ff;
+}
+
+.app-button,
+.app-button-secondary,
+.primary-button {
+    min-height: 46px;
+    padding: 0 22px;
+}
+
+.app-nav .app-nav-primary:hover,
+.app-nav .app-nav-secondary:hover,
+.app-button:hover,
+.app-button-secondary:hover,
+.nav-home:hover,
+.nav-login:hover,
+.primary-button:hover,
+.reminder-button-primary:hover:not(:disabled) {
+    border-color: #c3a5ed;
+    background: rgb(84 32 120 / 22%);
+    color: #fff;
+}
+
+.app-nav .app-nav-primary,
+.app-button,
+.primary-button,
+.reminder-button-primary {
+    box-shadow: none;
+}
+
+.app-nav .app-nav-secondary,
+.app-button-secondary,
+.nav-button,
+.social-button,
+.reminder-button {
+    border-color: rgb(112 94 132 / 62%);
+    background: transparent;
+    color: #ddd0f1;
+}
+
+.landing-page .app-nav a {
+    min-height: 40px;
+    padding: 0 17px;
+    border-radius: 0;
+    clip-path: polygon(13px 0, 100% 0, calc(100% - 13px) 100%, 0 100%);
+}
+
+.dashboard-action {
+    width: 100%;
+    min-height: 60px;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 0;
+    padding: 10px 18px;
+    border-color: rgb(155 119 184 / 42%);
+    color: var(--text);
+    text-align: left;
+}
+
+.dashboard-action span strong,
+.dashboard-action span small {
+    display: block;
+}
+
+.dashboard-action span small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.action-icon {
+    flex: 0 0 34px;
+    border-color: rgb(168 139 216 / 42%);
+    background: rgb(121 90 157 / 16%);
+    color: #d7c3f5;
+}
+
+.dashboard-action-form button {
+    min-height: 42px;
+}
+
+.back-link {
+    margin-top: 24px;
+    padding-right: 20px;
+    padding-left: 20px;
+    color: #ddd0f1;
+}
+
+.text-button {
+    margin-top: 16px;
+}
+
+.reminder-button {
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 12px;
+}
+
+.reminder-button:disabled {
+    cursor: wait;
+    opacity: .58;
+}
+
+.app-form,
+.assistant-card,
+.receipt-card,
+.landing-preview,
+.split-total,
+.custom-shares,
+.assistant-summary,
+.confirmation-summary,
+.receipt-fields,
+.split-option,
+.participant-option,
+.group-picker,
+.receipt-item-row,
+.adjustment-allocation-row {
+    border: 1px solid rgb(112 94 132 / 34%);
+    background: var(--surface);
+    box-shadow: 0 14px 38px rgb(0 0 0 / 14%);
+}
+
+.app-form,
+.assistant-card,
+.receipt-card,
+.landing-preview {
+    border-radius: 12px;
+}
+
+.app-form {
+    max-width: 600px;
+    padding: clamp(20px, 4vw, 30px);
+}
+
+.summary-grid {
+    gap: 0;
+    overflow: visible;
+    border: 0;
+    background: transparent;
+}
+
+.summary-item {
+    min-width: 0;
+    border-radius: 0;
+    border-color: rgb(155 119 184 / 32%);
+    color: var(--muted);
+}
+
+.summary-item:last-child {
+    border-right: 0;
+}
+
+.summary-net {
+    background: transparent;
+}
+
+.data-list,
+.member-list,
+.balance-list {
+    border-color: rgb(155 119 184 / 34%);
+    background: transparent;
+}
+
+.dashboard-page .balance-list {
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+}
+
+.dashboard-page .dashboard-sidebar > h2 {
+    padding-bottom: 0;
+    border: 0;
+}
+
+.empty-state {
+    border-color: rgb(112 94 132 / 52%);
+    background: transparent;
+    color: var(--muted);
+}
+
+.summary-item strong {
+    color: var(--text);
+}
+
+.balance-list li,
+.member-list li,
+.data-row,
+.expense-entry {
+    border-radius: 0;
+    background: transparent;
+}
+
+.balance-list li {
+    margin: 0;
+    padding: 16px 0;
+    border-bottom: 1px solid rgb(155 119 184 / 26%);
+}
+
+.balance-list li:last-child {
+    border-bottom: 0;
+}
+
+.data-row {
+    margin-bottom: 8px;
+    padding: 14px;
+}
+
+.expense-entry {
+    margin: 12px 0;
+    padding: 18px;
+}
+
+.settlement-parties span,
+.settlement-parties small {
+    color: var(--muted);
+}
+
+.settlement-amount {
+    color: #f5f0ff;
+    font-size: 17px;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+}
+
+.balance-positive,
+.balance-positive-label {
+    color: var(--success);
+}
+
+.balance-negative,
+.balance-negative-label {
+    color: var(--error);
+}
+
+.form-field input,
+.form-field select,
+.app-input,
+.field input,
+.field-control input,
+.password-field input,
+.assistant-card textarea,
+.assistant-card input,
+.assistant-card select,
+.receipt-form-grid input,
+.receipt-form-grid select,
+.payer-field select,
+.group-picker select,
+.member-share-row input,
+.receipt-item-row input,
+#splitType,
+.reconciliation-field input,
+.adjustment-allocation-row input {
+    border: 1px solid rgb(112 94 132 / 70%);
+    border-radius: 7px;
+    background: rgb(16 13 25 / 76%);
+    color: var(--text);
+    color-scheme: dark;
+}
+
+.form-field input::placeholder,
+.field input::placeholder,
+.field-control input::placeholder,
+.password-field input::placeholder,
+.assistant-card textarea::placeholder {
+    color: #8f829f;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.app-input:focus,
+.field input:focus,
+.field-control input:focus,
+.password-field input:focus,
+.assistant-card textarea:focus,
+.assistant-card input:focus,
+.assistant-card select:focus,
+.receipt-form-grid input:focus,
+.receipt-form-grid select:focus,
+.payer-field select:focus,
+.group-picker select:focus,
+.member-share-row input:focus,
+.receipt-item-row input:focus,
+#splitType:focus,
+.reconciliation-field input:focus,
+.adjustment-allocation-row input:focus {
+    border-color: var(--purple);
+    outline: 2px solid rgb(168 139 216 / 25%);
+    outline-offset: 1px;
+    box-shadow: 0 0 0 3px rgb(168 139 216 / 9%);
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    accent-color: var(--purple);
+}
+
+.status-message,
+.split-help,
+.assistant-notices,
+.receipt-notice {
+    border: 1px solid rgb(112 94 132 / 44%);
+    border-left: 3px solid var(--purple);
+    border-radius: 7px;
+    background: rgb(42 34 55 / 82%);
+    color: var(--text);
+}
+
+.status-message[role="alert"],
+.error-message,
+.form-alert {
+    border-color: rgb(230 160 173 / 45%);
+    border-left-color: var(--error);
+    background: rgb(77 42 54 / 34%);
+    color: #f0c1ca;
+}
+
+.success-message {
+    border-color: rgb(139 201 164 / 38%);
+    border-left-color: var(--success);
+    background: rgb(42 76 56 / 32%);
+    color: #b7e0c5;
+}
+
+.receipt-notice {
+    border: 1px solid rgb(112 94 132 / 44%);
+    background: rgb(42 34 55 / 82%);
+    color: var(--text);
+}
+
+.reminder-toast,
+.reminder-toast-error {
+    border: 1px solid rgb(112 94 132 / 60%);
+    border-radius: 8px;
+    background: #211b2c;
+    color: #d7c3f5;
+    box-shadow: 0 14px 38px rgb(0 0 0 / 32%);
+}
+
+.reminder-toast-error {
+    border-color: rgb(230 160 173 / 54%);
+    background: #2b1d29;
+    color: #f0c1ca;
+}
+
+.landing-preview {
+    border-color: rgb(139 112 168 / 38%);
+    background:
+        radial-gradient(ellipse at 88% 8%, rgb(111 78 151 / 15%), transparent 48%),
+        rgb(25 21 34 / 82%);
+}
+
+.preview-total,
+.preview-rows > div,
+.preview-settlement,
+.assistant-summary,
+.custom-shares,
+.confirmation-summary,
+.group-picker,
+.split-option,
+.participant-option,
+.receipt-item-row,
+.adjustment-allocation-row {
+    border-color: rgb(112 94 132 / 38%);
+    background: rgb(18 15 26 / 72%);
+    color: var(--text);
+}
+
+.preview-members {
+    border: 1px solid rgb(112 94 132 / 46%);
+    border-radius: 0;
+    background: rgb(111 78 151 / 16%);
+    color: #ddd0f1;
+}
+
+.settlement-check {
+    border: 1px solid rgb(139 201 164 / 36%);
+    background: rgb(51 86 63 / 38%);
+    color: var(--success);
+}
+
+.preview-total > span,
+.preview-members,
+.preview-rows > div > span:not(.preview-dot),
+.preview-settlement small,
+.assistant-summary dt,
+.assistant-summary dd,
+.receipt-extracted-summary dt,
+.receipt-form-grid small,
+.reconciliation-field small,
+.confirmation-summary dt,
+.receipt-card > p,
+.receipt-items-section p,
+.item-adjustments > p,
+.preview-actions span,
+.receipt-loading {
+    color: var(--muted);
+}
+
+.preview-total strong,
+.preview-rows strong,
+.preview-header h2,
+.preview-settlement strong,
+.assistant-summary dd,
+.receipt-extracted-summary dd,
+.confirmation-summary dd {
+    color: var(--text);
+}
+
+.receipt-card {
+    margin: 1.5rem 0;
+    border-color: rgb(112 94 132 / 42%);
+    background: var(--surface);
+    box-shadow: 0 14px 38px rgb(0 0 0 / 16%);
+}
+
+.receipt-eyebrow,
+.assistant-eyebrow {
+    color: #c3a5ed;
+}
+
+.upload-dropzone {
+    border-color: rgb(137 112 165 / 58%);
+    border-radius: 10px;
+    background: rgb(18 15 26 / 70%);
+    color: var(--text);
+}
+
+.upload-dropzone:hover,
+.upload-dropzone:focus-within {
+    border-color: var(--purple);
+    background: rgb(111 78 151 / 14%);
+}
+
+.upload-icon {
+    background: rgb(121 90 157 / 22%);
+    color: #d7c3f5;
+}
+
+.receipt-preview {
+    background: rgb(16 13 25 / 76%);
+}
+
+.receipt-fields {
+    border-radius: 9px;
+}
+
+.receipt-items-section {
+    border-top-color: rgb(112 94 132 / 40%);
+}
+
+.receipt-item-row label,
+.adjustment-allocation-row label,
+.receipt-form-grid label,
+.payer-field label,
+.reconciliation-field label,
+.group-picker label {
+    color: var(--text);
+}
+
+.remove-item {
+    min-width: 82px;
+}
+
+.participant-option {
+    border-radius: 0;
+    clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%);
+}
+
+.split-option {
+    clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+}
+
+.upload-dropzone {
+    clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 50%, calc(100% - 14px) 100%, 14px 100%, 0 50%);
+}
+
+.password-toggle {
+    min-width: 48px;
+    min-height: 30px;
+    padding: 0 9px;
+    border: 1px solid rgb(112 94 132 / 54%);
+    background: transparent;
+    color: #ddd0f1;
+    clip-path: polygon(7px 0, 100% 0, calc(100% - 7px) 100%, 0 100%);
+}
+
+.password-toggle:hover {
+    border-color: rgb(175 145 222 / 72%);
+    background: rgb(84 32 120 / 16%);
+    color: #d7c3f5;
+    box-shadow: 0 0 24px rgb(119 83 159 / 12%);
+}
+
+.auth-layout {
+    min-height: 100vh;
+    background: transparent;
+}
+
+.auth-topbar {
+    z-index: 2;
+}
+
+.auth-content {
+    padding: clamp(22px, 5vw, 34px);
+    border: 1px solid rgb(112 94 132 / 42%);
+    border-radius: 12px;
+    background: rgb(25 21 34 / 88%);
+    box-shadow: 0 18px 54px rgb(0 0 0 / 24%);
+}
+
+.form-heading h1,
+.field label {
+    color: var(--text);
+}
+
+.form-heading p,
+.auth-switch,
+.divider {
+    color: var(--muted);
+}
+
+.field-icon {
+    stroke: var(--muted);
+}
+
+.social-button {
+    min-height: 44px;
+}
+
+.google-mark {
+    color: #bda7df;
+}
+
+.github-mark {
+    fill: currentColor;
+}
+
+.divider::before,
+.divider::after {
+    background: rgb(112 94 132 / 50%);
+}
+
+.auth-switch a {
+    color: #c3a5ed;
+}
+
+.form-alert {
+    border-radius: 7px;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid #c3a5ed;
+    outline-offset: 3px;
+}
+
+button:disabled,
+button[disabled] {
+    cursor: not-allowed;
+    opacity: .58;
+}
+
+@media (max-width: 760px) {
+    .app-nav {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 4px;
+    }
+
+    .app-nav a,
+    .app-nav button {
+        padding: 0 12px;
+    }
+
+    .auth-topbar {
+        right: 18px;
+    }
+
+    .auth-content {
+        padding: 22px;
+    }
+
+    .app-form {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-nav {
+        gap: 2px;
+    }
+
+    .app-nav a,
+    .app-nav button {
+        padding: 0 9px;
+        font-size: 11px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition-duration: .01ms !important;
+    }
+}
