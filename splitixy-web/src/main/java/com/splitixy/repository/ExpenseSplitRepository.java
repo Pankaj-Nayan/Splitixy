@@ -9,6 +9,7 @@ public interface ExpenseSplitRepository extends JpaRepository<ExpenseSplit, Inte
 
     List<ExpenseSplit> findByExpenseId(Integer expenseId);
     List<ExpenseSplit> findByExpenseIdIn(List<Integer> expenseIds);
+    List<ExpenseSplit> findByExpenseIdInAndUserId(List<Integer> expenseIds, Integer userId);
 
     List<ExpenseSplit> findByUserId(Integer userId);
 }
