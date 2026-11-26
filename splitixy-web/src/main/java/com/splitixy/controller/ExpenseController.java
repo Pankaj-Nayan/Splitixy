@@ -64,6 +64,7 @@ public class ExpenseController {
             @RequestParam(required = false) String description,
             @RequestParam(required = false) String splitType,
             @RequestParam(required = false) String paidBy,
+            @RequestParam(required = false) String category,
             @RequestParam Map<String, String> params,
             HttpSession session,
             Model model) {
@@ -103,7 +104,7 @@ public class ExpenseController {
             }
         } catch (NumberFormatException exception) {
             addExpenseFormModel(groupId, members, model);
-            addFormValues(model, amount, description, splitType, paidBy, displayedShares);
+            addFormValues(model, amount, description, splitType, paidBy, category, displayedShares);
             model.addAttribute("error", "Enter a valid amount, payer, and member share.");
             return "add-expense";
         }
@@ -114,12 +115,13 @@ public class ExpenseController {
         expense.setCreatedBy(currentUser.getId());
         expense.setAmount(parsedAmount);
         expense.setDescription(description);
+        expense.setCategory(category);
         try {
             expenseService.createExpense(expense, splitType, shares);
             return "redirect:/group/" + groupId;
         } catch (IllegalArgumentException exception) {
             addExpenseFormModel(groupId, members, model);
-            addFormValues(model, amount, description, splitType, paidBy, displayedShares);
+            addFormValues(model, amount, description, splitType, paidBy, category, displayedShares);
             model.addAttribute("error", exception.getMessage());
             return "add-expense";
         }
@@ -183,11 +185,13 @@ public class ExpenseController {
             String description,
             String splitType,
             String paidBy,
+            String category,
             Map<String, String> shares) {
         model.addAttribute("amountValue", amount);
         model.addAttribute("descriptionValue", description);
         model.addAttribute("splitType", splitType);
         model.addAttribute("selectedPayerId", paidBy);
+        model.addAttribute("categoryValue", category);
         model.addAttribute("customShares", shares);
     }
 }
